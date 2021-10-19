@@ -1,0 +1,286 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR X11)
+
+/dts-v1/;
+#include "suniv-f1c100s.dtsi"
+
+/ {
+	model = "Widora MangoPi R3";
+	compatible = "allwinner,suniv-f1c200s",
+			 "allwinner,suniv-f1c100s";
+
+	aliases {
+		serial0 = &uart0;
+		serial1 = &uart1;
+	};
+
+	chosen {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		ranges;
+
+		stdout-path = "serial1:115200n8";
+	};
+
+	leds {
+		compatible = "gpio-leds";
+
+		status {
+			label = "status";
+			gpios = <&pio 4 4 GPIO_ACTIVE_HIGH>; /* PE4 */
+			linux,default-trigger = "heartbeat";
+		};
+	};
+
+	backlight: backlight {
+		compatible = "pwm-backlight";
+		pwms = <&pwm 1 1000000 1>;
+		brightness-levels = <0 30 40 50 60 70 100>;
+		default-brightness-level = <3>;
+		status = "okay";
+	};
+
+	panel: panel {
+		compatible = "bananapi,s070wv20-ct16", "simple-panel";
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		port@0 {
+			reg = <0>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+
+			panel_input: endpoint@0 {
+				reg = <0>;
+				remote-endpoint = <&tcon0_out_lcd>;
+			};
+		};
+	};
+};
+
+&spi0 {
+	status = "okay";
+	spi-nand@0 {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		compatible = "spi-nand";
+		reg = <0>;
+		spi-max-frequency = <50000000>;
+		status = "okay";
+
+		partitions {
+			compatible = "fixed-partitions";
+			#address-cells = <1>;
+			#size-cells = <1>;
+
+		boot@0 {
+			label = "boot";
+			reg = <0x0000000 0x0100000>;
+		};
+
+		ubi0@100000 {
+			label = "ubi0";
+			reg = <0x0100000 0x0000000>;
+		};
+	   };
+	};
+};
+
+&uart0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart0_pe_pins>;
+	status = "okay";
+};
+
+&uart1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart1_pa_pins>;
+	status = "okay";
+};
+
+&mmc0 {
+	status = "okay";
+	broken-cd;
+};
+
+&otg_sram {
+	status = "okay";
+};
+
+&usb_otg {
+	dr_mode = "peripheral"; /* host peripheral */
+	status = "okay";
+};
+
+&usbphy {
+	status = "okay";
+};
+
+&cedar_ve {
+	status = "okay";
+};
+
+&ion {
+	status = "okay";
+};
+
+&de {
+	status = "okay";
+};
+
+&fe0 {
+	status = "okay";
+};
+
+&be0 {
+	status = "okay";
+};
+
+&tve0 {
+	status = "okay";
+};
+
+&tcon0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&lcd_rgb565_pins>;
+	status = "okay";
+};
+
+&tcon0_out {
+	tcon0_out_lcd: endpoint@0 {
+		reg = <0>;
+		remote-endpoint = <&panel_input>;
+	};
+};
+
+&codec {
+	allwinner,audio-routing =
+		"Headphone", "HP",
+		"Headphone", "HPCOM",
+		"LINEIN", "Line In",
+		"FMINL", "Left FM In",
+		"FMINR", "Right FM In",
+		"MIC", "Mic";
+	status = "okay";
+};
+
+&i2c0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c0_pd_pins>;
+	status = "okay";
+
+	rtp@48 {
+		compatible = "ti,tsc2007";
+		reg = <0x48>;
+		interrupt-parent = <&pio>;
+		interrupts = <4 12 IRQ_TYPE_EDGE_FALLING>;
+		gpios = <&pio 4 12 GPIO_ACTIVE_LOW>;
+		pendown-gpio = <&pio 4 12 GPIO_ACTIVE_LOW>;
+		ti,x-plate-ohms = <660>;
+		wakeup-source;
+		status = "disabled";
+	};
+
+	ctp@5d {
+		compatible = "goodix,gt911";
+		reg = <0x5d>;
+		interrupt-parent = <&pio>;
+		interrupts = <4 12 IRQ_TYPE_EDGE_FALLING>; // PE12
+		irq-gpios = <&pio 4 12 GPIO_ACTIVE_HIGH>; // PE12
+		reset-gpios = <&pio 0 0 GPIO_ACTIVE_HIGH>; // PA0
+	};
+/*
+	ov2640: camera@30 {
+		compatible = "ovti,ov2640";
+		reg = <0x30>;
+		pinctrl-0 = <&clk_out_pins>;
+		pinctrl-names = "default";
+		clocks = <&clk_out>;
+		clock-names = "xvclk";
+		assigned-clocks = <&clk_out>;
+		assigned-clock-rates = <24000000>;
+
+		port {
+			ov2640_ep: endpoint {
+				remote-endpoint = <&csi0_ep>;
+				bus-width = <8>;
+				hsync-active = <0>;
+				vsync-active = <0>;
+				pclk-sample = <1>;
+			};
+		};
+	};
+
+	ov5640: camera@3c {
+		compatible = "ovti,ov5640";
+		reg = <0x3c>;
+		pinctrl-0 = <&clk_out_pins>;
+		pinctrl-names = "default";
+		clocks = <&clk_out>;
+		clock-names = "xclk";
+		assigned-clocks = <&clk_out>;
+		assigned-clock-rates = <24000000>;
+		status = "disabled";
+
+		port {
+			ov5640_ep: endpoint {
+				remote-endpoint = <&csi0_ep>;
+				bus-width = <8>;
+				hsync-active = <0>;
+				vsync-active = <0>;
+				pclk-sample = <1>;
+			};
+		};
+	};
+*/
+};
+
+&csi0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&csi0_pins>;
+	packed-format;
+	status = "disabled";
+
+	port {
+		csi0_ep: endpoint {
+			remote-endpoint = <&ov2640_ep>;
+			bus-width = <8>;
+			hsync-active = <0>;
+			vsync-active = <0>;
+			pclk-sample = <1>;
+		};
+	};
+};
+
+&pio {
+	spi1_pins: spi1-pins-pa {
+		pins = "PE7", "PE8", "PE9", "PE10";
+		function = "spi1";
+	};
+
+	pwm1_pin: pwm1@0 {
+		pins = "PE6";
+		function = "pwm1";
+	};
+};
+
+&spi1 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&spi1_pins>;
+	status = "okay";
+
+	display@0 {
+		compatible = "himax,hx8347d";
+		reg = <0>;
+		status = "okay";
+		spi-max-frequency = <50000000>;
+		rotate = <0>;
+		bgr;
+		fps = <30>;
+		buswidth = <8>;
+		dc-gpios = <&pio 4 5 GPIO_ACTIVE_HIGH>; //PE5
+		debug = <0>;
+		backlight = <&backlight>;
+	};
+};
