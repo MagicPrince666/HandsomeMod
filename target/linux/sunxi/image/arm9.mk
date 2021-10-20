@@ -33,4 +33,13 @@ endef
 
 TARGET_DEVICES += widora_widora-tiny200-v3
 
+define Device/prince_f1c100s-card
+  DEVICE_VENDOR := Prince
+  DEVICE_MODEL := Magic Prince
+  SOC := suniv
+  KERNEL_COMPRESS := Y
+endef
+
+TARGET_DEVICES += prince_f1c100s-card
+
 endif

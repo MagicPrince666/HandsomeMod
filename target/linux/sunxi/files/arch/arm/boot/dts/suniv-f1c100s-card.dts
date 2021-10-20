@@ -4,7 +4,7 @@
 #include "suniv-f1c100s.dtsi"
 
 / {
-	model = "Widora MangoPi R3";
+	model = "Magic Prince Card";
 	compatible = "allwinner,suniv-f1c200s",
 			 "allwinner,suniv-f1c100s";
 
@@ -270,12 +270,26 @@
 	pinctrl-0 = <&spi1_pins>;
 	status = "okay";
 
-	display@0 {
+	hx8347d@0 {
 		compatible = "himax,hx8347d";
+		reg = <0>;
+		status = "disabled";
+		spi-max-frequency = <50000000>;
+		rotate = <0>;
+		bgr;
+		fps = <30>;
+		buswidth = <8>;
+		dc-gpios = <&pio 4 5 GPIO_ACTIVE_HIGH>; //PE5
+		debug = <0>;
+		backlight = <&backlight>;
+	};
+
+	ili9341@0 {
+		compatible = "ilitek,ili9341";
 		reg = <0>;
 		status = "okay";
 		spi-max-frequency = <50000000>;
-		rotate = <0>;
+		rotate = <270>;
 		bgr;
 		fps = <30>;
 		buswidth = <8>;
