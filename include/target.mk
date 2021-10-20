@@ -30,7 +30,7 @@ DEFAULT_PACKAGES:=\
 ifneq ($(CONFIG_NETWORK_NETIFD),)
 DEFAULT_PACKAGES+=netifd
 else
-DEFAULT_PACKAGES+=network-manager ifupdown
+DEFAULT_PACKAGES+=
 endif
 
 ifneq ($(CONFIG_SELINUX),)
