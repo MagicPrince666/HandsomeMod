@@ -337,6 +337,13 @@ define U-Boot/widora_tiny200_v3
   UENV:=licheepi-nano
 endef
 
+define U-Boot/prince_f1c100s_card
+  BUILD_SUBTARGET:=arm9
+  NAME:=U-Boot for Prince card (F1C200s)
+  BUILD_DEVICES:=prince_f1c100s-card
+  UENV:=licheepi-nano
+endef
+
 define U-Boot/Sinlinx_SinA33
   BUILD_SUBTARGET:=cortexa7
   NAME:=U-Boot for Sinlinx SinA33 (A33)
