@@ -418,6 +418,7 @@ UBOOT_TARGETS := \
 	LicheePi_Nano \
 	widora_tiny200_v2 \
 	widora_tiny200_v3 \
+  prince_f1c100s_card \
 	Sinlinx_SinA33 \
 	Sinlinx_SinA33_V3 \
 	pinecube \
