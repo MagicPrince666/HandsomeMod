@@ -67,7 +67,7 @@
 
     backlight: backlight {
         compatible = "pwm-backlight";
-//        enable-gpios = <&pio 1 4 GPIO_ACTIVE_LOW>; /* PB4 PWM0 */
+        enable-gpios = <&pio 1 4 GPIO_ACTIVE_LOW>; /* PB4 PWM0 */
 		pwms = <&pwm 0 1000000 PWM_POLARITY_INVERTED>;
 		brightness-levels = <0 30 40 50 60 70 100>;
 		default-brightness-level = <6>;
@@ -129,6 +129,7 @@
     phy-handle = <&int_mii_phy>;
     phy-mode = "mii";
     allwinner,leds-active-low;
+	local-mac-address = [a4 51 29 00 00 08];
     status = "okay";
 };
 

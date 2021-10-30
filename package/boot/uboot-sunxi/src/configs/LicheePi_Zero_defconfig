@@ -12,5 +12,5 @@ CONFIG_PWM_SUNXI=y
 CONFIG_BOOTDELAY=1
 CONFIG_SYS_PROMPT="Prince> "
 
-CONFIG_VIDEO_LCD_MODE="x:800,y:480,depth:18,pclk_khz:30000,le:16,ri:209,up:22,lo:22,hs:30,vs:1,sync:0,vmode:0"
+CONFIG_VIDEO_LCD_MODE="x:480,y:272,depth:18,pclk_khz:30000,le:16,ri:209,up:22,lo:22,hs:30,vs:1,sync:0,vmode:0"
 CONFIG_BOOTCOMMAND="setenv lcd_bl_pin 134; run distro_bootcmd;"
