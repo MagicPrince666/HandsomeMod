@@ -7,7 +7,6 @@ Subject: [PATCH] add support for pine64 pinecube
  arch/arm/boot/dts/Makefile                    |   1 +
  arch/arm/boot/dts/sun8i-s3-pinecube.dts       | 259 ++++++++++++++++++
  arch/arm/boot/dts/sun8i-v3.dtsi               |  13 +
- .../boot/dts/sun8i-v3s-licheepi-zero-dock.dts |   8 +
  arch/arm/boot/dts/sun8i-v3s.dtsi              | 103 +++++--
  5 files changed, 366 insertions(+), 18 deletions(-)
  create mode 100755 arch/arm/boot/dts/sun8i-s3-pinecube.dts
@@ -310,25 +309,6 @@ index 6ae8645ad..20b6583e6 100755
 +		#size-cells = <0>;
 +	};
 +};
-diff --git a/arch/arm/boot/dts/sun8i-v3s-licheepi-zero-dock.dts b/arch/arm/boot/dts/sun8i-v3s-licheepi-zero-dock.dts
-index 5c0d748d1..8d24ab8ac 100755
---- a/arch/arm/boot/dts/sun8i-v3s-licheepi-zero-dock.dts
-+++ b/arch/arm/boot/dts/sun8i-v3s-licheepi-zero-dock.dts
-@@ -160,6 +160,14 @@
-     };
- };
- 
-+&ohci0 {
-+	status = "okay";
-+};
-+
-+&ehci0 {
-+	status = "okay";
-+};
-+
- &lradc {
- 	vref-supply = <&reg_vcc3v0>;
- 	status = "okay";
 diff --git a/arch/arm/boot/dts/sun8i-v3s.dtsi b/arch/arm/boot/dts/sun8i-v3s.dtsi
 index f8c455d7c..b49410ea4 100755
 --- a/arch/arm/boot/dts/sun8i-v3s.dtsi

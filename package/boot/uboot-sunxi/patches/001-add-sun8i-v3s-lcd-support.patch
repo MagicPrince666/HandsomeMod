@@ -4,12 +4,10 @@ Date: Mon, 5 Oct 2020 21:26:53 +0800
 Subject: [PATCH] add sun8i-v3s lcd support
 
 ---
- arch/arm/dts/sun8i-v3s-licheepi-zero.dts      |  55 ++++++++
  arch/arm/dts/sun8i-v3s.dtsi                   | 131 +++++++++++++++++-
  arch/arm/include/asm/arch-sunxi/clock_sun6i.h |   5 +-
  arch/arm/include/asm/arch-sunxi/gpio.h        |   2 +
  arch/arm/mach-sunxi/Kconfig                   |   1 +
- configs/LicheePi_Zero_defconfig               |   4 +
  configs/widora_tiny200_v2_nand_defconfig      |  29 ++++
  configs/widora_tiny200_v3_nand_defconfig      |  29 ++++
  drivers/pwm/sunxi_pwm.c                       |   3 +
@@ -19,72 +17,6 @@ Subject: [PATCH] add sun8i-v3s lcd support
  drivers/video/sunxi/sunxi_lcd.c               |   9 +-
  13 files changed, 289 insertions(+), 14 deletions(-)
 
-diff --git a/arch/arm/dts/sun8i-v3s-licheepi-zero.dts b/arch/arm/dts/sun8i-v3s-licheepi-zero.dts
-index 3d9168cb..c3d1b357 100644
---- a/arch/arm/dts/sun8i-v3s-licheepi-zero.dts
-+++ b/arch/arm/dts/sun8i-v3s-licheepi-zero.dts
-@@ -55,6 +55,61 @@
- 	chosen {
- 		stdout-path = "serial0:115200n8";
- 	};
-+
-+
-+	backlight: backlight {
-+		compatible = "pwm-backlight";
-+		pwms = <&pwm 0 1000000 0>;
-+		brightness-levels = <0 30 40 50 60 70 100>;
-+		default-brightness-level = <6>;
-+	};
-+
-+	panel: panel {
-+		compatible = "lg,lb070wv8", "simple-panel";
-+		backlight = <&backlight>;
-+
-+		port {
-+			panel_input: endpoint {
-+				remote-endpoint = <&tcon0_out_lcd>;
-+			};
-+		};
-+
-+		display-timings {
-+			timing0: timing0 {
-+				clock-frequency = <33000000>;
-+				hactive = <800>;
-+				vactive = <480>;
-+
-+				hfront-porch = <40>;
-+				hsync-len = <1>;
-+				hback-porch = <87>;
-+
-+				vback-porch = <31>;
-+				vsync-len = <1>;
-+				vfront-porch = <13>;
-+			};
-+		};
-+	};
-+
-+};
-+
-+&tcon0 {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&lcd_pins>;
-+	status = "okay";
-+};
-+
-+&tcon0_out {
-+	tcon0_out_lcd: endpoint@0 {
-+		reg = <0>;
-+		remote-endpoint = <&panel_input>;
-+	};
-+};
-+
-+&pwm {
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&pwm0_pins>;
-+	status = "okay";
- };
- 
- &mmc0 {
 diff --git a/arch/arm/dts/sun8i-v3s.dtsi b/arch/arm/dts/sun8i-v3s.dtsi
 index ebefc0fe..dc62512e 100644
 --- a/arch/arm/dts/sun8i-v3s.dtsi
@@ -328,21 +260,6 @@ index 015fd59a..f45bbd94 100644
  	select SUNXI_GEN_SUN6I
  	select SUNXI_DRAM_DW
  	select SUNXI_DRAM_DW_16BIT
-diff --git a/configs/LicheePi_Zero_defconfig b/configs/LicheePi_Zero_defconfig
-index 04d7b645..83d785a4 100644
---- a/configs/LicheePi_Zero_defconfig
-+++ b/configs/LicheePi_Zero_defconfig
-@@ -3,5 +3,9 @@ CONFIG_ARCH_SUNXI=y
- CONFIG_SPL=y
- CONFIG_MACH_SUN8I_V3S=y
- CONFIG_DRAM_CLK=360
-+CONFIG_VIDEO_LCD_DCLK_PHASE=0
- CONFIG_DEFAULT_DEVICE_TREE="sun8i-v3s-licheepi-zero"
-+CONFIG_DM_REGULATOR=y
-+CONFIG_DM_PWM=y
-+CONFIG_PWM_SUNXI=y
- # CONFIG_NETDEVICES is not set
-
 diff --git a/drivers/pwm/sunxi_pwm.c b/drivers/pwm/sunxi_pwm.c
 index 56215dbf..0c3047fb 100644
 --- a/drivers/pwm/sunxi_pwm.c
