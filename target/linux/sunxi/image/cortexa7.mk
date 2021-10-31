@@ -244,6 +244,7 @@ define Device/sipeed_licheepi-zero-dock
   DEVICE_MODEL := Lichee Pi Zero With Dock
   DEVICE_PACKAGES:=kmod-rtc-sunxi
   SOC := sun8i-v3s
+  CONFIG_TARGET_ROOTFS_PARTSIZE := 7168
 endef
 
 TARGET_DEVICES += sipeed_licheepi-zero-dock
