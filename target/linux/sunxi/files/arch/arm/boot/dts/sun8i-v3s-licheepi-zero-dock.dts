@@ -67,11 +67,10 @@
 
     backlight: backlight {
         compatible = "pwm-backlight";
-        enable-gpios = <&pio 1 4 GPIO_ACTIVE_LOW>; /* PB4 PWM0 */
+        enable-gpios = <&pio 1 4 GPIO_ACTIVE_HIGH>; /* PB4 PWM0 */
 		pwms = <&pwm 0 1000000 PWM_POLARITY_INVERTED>;
 		brightness-levels = <0 30 40 50 60 70 100>;
 		default-brightness-level = <6>;
-		status = "okay";
     };
 
     panel: panel {
@@ -148,6 +147,18 @@
 		compatible = "nsiway,ns2009";
 		reg = <0x48>;
 	};
+/*
+	rtp@48 {
+		compatible = "ti,tsc2007";
+		reg = <0x48>;
+		interrupt-parent = <&pio>;
+		interrupts = <4 12 IRQ_TYPE_EDGE_FALLING>;
+		gpios = <&pio 4 12 GPIO_ACTIVE_LOW>;
+		pendown-gpio = <&pio 4 12 GPIO_ACTIVE_LOW>;
+		ti,x-plate-ohms = <660>;
+		wakeup-source;
+	};
+*/
 };
 
 &tcon0 {
