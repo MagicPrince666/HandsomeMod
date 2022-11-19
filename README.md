@@ -38,17 +38,20 @@ chosen applications for your target system.
 
 This means those socs can get better support than others.
 
-- Rapsberry pi
 - Allwinner Socs (linux mainline)
+- Qualcomm MSM89xx Family
+- Rapsberry pi
 - X86
-- Allwinner Socs (bsp kernel) (Planing)
 - Freescale I.MX6ULL Family (WIP)
 - Loongson64 Family (WIP)
-- Qualcomm MSM89xx Family (WIP) 
+- Allwinner Socs (bsp kernel) (Planing)
 
 ## Thanks
 
-The orginal code comes form openwrt project.
+HandsomeMod based on OpenWrt project.
+
+	* branch : openwrt-21.02
+	* commit: fc86176363149493810dc0b424583dd120e7f4c7
 
 https://github.com/openwrt/openwrt
 

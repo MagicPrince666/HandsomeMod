@@ -24,7 +24,7 @@ define Device/friendlyarm_nanopi-m1-plus
   DEVICE_VENDOR := FriendlyARM
   DEVICE_MODEL := NanoPi M1 Plus
   DEVICE_PACKAGES:=kmod-rtc-sunxi kmod-leds-gpio kmod-brcmfmac \
-	brcmfmac-firmware-43430-sdio wpad-basic-wolfssl
+	cypress-firmware-43430-sdio wpad-basic-wolfssl
   SOC := sun8i-h3
 endef
 TARGET_DEVICES += friendlyarm_nanopi-m1-plus
@@ -34,7 +34,7 @@ define Device/friendlyarm_nanopi-duo2
   DEVICE_MODEL := NanoPi Duo 2
   DEVICE_PACKAGES:=kmod-rtc-sunxi \
 	kmod-leds-gpio kmod-ledtrig-heartbeat \
-	kmod-brcmfmac brcmfmac-firmware-43430-sdio wpad-basic
+	kmod-brcmfmac cypress-firmware-43430-sdio wpad-basic
   SOC := sun8i-h3
 endef
 
@@ -51,7 +51,7 @@ define Device/friendlyarm_nanopi-neo-air
   DEVICE_VENDOR := FriendlyARM
   DEVICE_MODEL := NanoPi NEO Air
   DEVICE_PACKAGES := kmod-rtc-sunxi kmod-leds-gpio kmod-brcmfmac \
-	brcmfmac-firmware-43430-sdio wpad-basic-wolfssl
+	cypress-firmware-43430-sdio wpad-basic-wolfssl
   SOC := sun8i-h3
 endef
 TARGET_DEVICES += friendlyarm_nanopi-neo-air
@@ -60,7 +60,7 @@ define Device/friendlyarm_nanopi-r1
   DEVICE_VENDOR := FriendlyARM
   DEVICE_MODEL := NanoPi R1
   DEVICE_PACKAGES := kmod-rtc-sunxi kmod-usb-net-rtl8152 kmod-leds-gpio \
-	kmod-brcmfmac brcmfmac-firmware-43430-sdio wpad-basic-wolfssl
+	kmod-brcmfmac cypress-firmware-43430-sdio wpad-basic-wolfssl
   SOC := sun8i-h3
 endef
 TARGET_DEVICES += friendlyarm_nanopi-r1
@@ -88,6 +88,16 @@ define Device/lemaker_bananapi
   SOC := sun7i-a20
 endef
 TARGET_DEVICES += lemaker_bananapi
+
+define Device/sinovoip_bananapi-m2-berry
+  DEVICE_VENDOR := Sinovoip
+  DEVICE_MODEL := Banana Pi M2 Berry
+  DEVICE_PACKAGES:=kmod-rtc-sunxi kmod-ata-sunxi kmod-brcmfmac \
+	brcmfmac-firmware-43430-sdio wpad-basic-wolfssl
+  SUPPORTED_DEVICES:=lemaker,bananapi-m2-berry
+  SOC := sun8i-v40
+endef
+TARGET_DEVICES += sinovoip_bananapi-m2-berry
 
 define Device/sinovoip_bananapi-m2-ultra
   DEVICE_VENDOR := Sinovoip
