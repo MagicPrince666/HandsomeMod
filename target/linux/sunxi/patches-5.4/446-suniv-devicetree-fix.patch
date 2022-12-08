@@ -1,18 +1,8 @@
-From 4a1d455c37f873971291edd0a42cfd1718de1936 Mon Sep 17 00:00:00 2001
-From: handsomeyingyan <handsomeyingyan@github.com>
-Date: Sun, 20 Sep 2020 13:04:13 +0800
-Subject: [PATCH] suniv improvement
-
----
- .../boot/dts/suniv-f1c100s-licheepi-nano.dts  |  76 +++
- arch/arm/boot/dts/suniv-f1c100s.dtsi          | 497 +++++++++++++++++-
- 2 files changed, 566 insertions(+), 7 deletions(-)
-
-diff --git a/arch/arm/boot/dts/suniv-f1c100s-licheepi-nano.dts b/arch/arm/boot/dts/suniv-f1c100s-licheepi-nano.dts
-index a1154e6c7..582038551 100644
---- a/arch/arm/boot/dts/suniv-f1c100s-licheepi-nano.dts
-+++ b/arch/arm/boot/dts/suniv-f1c100s-licheepi-nano.dts
-@@ -15,8 +15,29 @@
+Index: linux-5.4.213/arch/arm/boot/dts/suniv-f1c100s-licheepi-nano.dts
+===================================================================
+--- linux-5.4.213.orig/arch/arm/boot/dts/suniv-f1c100s-licheepi-nano.dts
++++ linux-5.4.213/arch/arm/boot/dts/suniv-f1c100s-licheepi-nano.dts
+@@ -15,8 +15,27 @@
  	};
  
  	chosen {
@@ -21,7 +11,6 @@ index a1154e6c7..582038551 100644
 +		ranges;
  		stdout-path = "serial0:115200n8";
  	};
-+	
 +	panel: panel {
 +		compatible = "bananapi,s070wv20-ct16", "simple-panel";
 +		#address-cells = <1>;
@@ -38,11 +27,10 @@ index a1154e6c7..582038551 100644
 +			};
 +		};
 +	};
-+	
  };
  
  &uart0 {
-@@ -24,3 +45,58 @@
+@@ -24,3 +43,58 @@
  	pinctrl-0 = <&uart0_pe_pins>;
  	status = "okay";
  };
@@ -101,26 +89,24 @@ index a1154e6c7..582038551 100644
 +		"MIC", "Mic";
 +	status = "okay";
 +};
-diff --git a/arch/arm/boot/dts/suniv-f1c100s.dtsi b/arch/arm/boot/dts/suniv-f1c100s.dtsi
-index 6100d3b75..656b03a47 100644
---- a/arch/arm/boot/dts/suniv-f1c100s.dtsi
-+++ b/arch/arm/boot/dts/suniv-f1c100s.dtsi
-@@ -1,8 +1,10 @@
- // SPDX-License-Identifier: (GPL-2.0+ OR X11)
--/*
-- * Copyright 2018 Icenowy Zheng <icenowy@aosc.io>
-- * Copyright 2018 Mesih Kilinc <mesihkilinc@gmail.com>
-- */
-+
+Index: linux-5.4.213/arch/arm/boot/dts/suniv-f1c100s.dtsi
+===================================================================
+--- linux-5.4.213.orig/arch/arm/boot/dts/suniv-f1c100s.dtsi
++++ linux-5.4.213/arch/arm/boot/dts/suniv-f1c100s.dtsi
+@@ -4,6 +4,12 @@
+  * Copyright 2018 Mesih Kilinc <mesihkilinc@gmail.com>
+  */
+ 
 +#include <dt-bindings/interrupt-controller/irq.h>
 +#include "sunxi-common-regulators.dtsi"
 +#include <dt-bindings/clock/suniv-ccu-f1c100s.h>
 +#include <dt-bindings/reset/suniv-ccu-f1c100s.h>
 +#include <dt-bindings/dma/sun4i-a10.h>
- 
++
  / {
  	#address-cells = <1>;
-@@ -17,6 +19,14 @@
+ 	#size-cells = <1>;
+@@ -17,6 +23,14 @@
  			clock-output-names = "osc24M";
  		};
  
@@ -135,24 +121,23 @@ index 6100d3b75..656b03a47 100644
  		osc32k: clk-32k {
  			#clock-cells = <0>;
  			compatible = "fixed-clock";
-@@ -26,9 +36,14 @@
+@@ -26,9 +40,14 @@
  	};
  
  	cpus {
 -		cpu {
--			compatible = "arm,arm926ej-s";
 +		#size-cells = <0>;
 +		#address-cells = <1>;
 +
 +		cpu@0 {
+ 			compatible = "arm,arm926ej-s";
  			device_type = "cpu";
-+			compatible = "arm,arm926ej-s";
 +			reg = <0x0>;
 +			clocks = <&ccu CLK_CPU>;
  		};
  	};
  
-@@ -38,6 +53,19 @@
+@@ -38,6 +57,19 @@
  		#size-cells = <1>;
  		ranges;
  
@@ -172,10 +157,11 @@ index 6100d3b75..656b03a47 100644
  		sram-controller@1c00000 {
  			compatible = "allwinner,suniv-f1c100s-system-control",
  				     "allwinner,sun4i-a10-system-control";
-@@ -46,6 +74,20 @@
+@@ -45,6 +77,20 @@
+ 			#address-cells = <1>;
  			#size-cells = <1>;
  			ranges;
- 
++
 +			sram_c: sram@1d00000 {
 +				compatible = "mmio-sram";
 +				reg = <0x01d00000 0x80000>;
@@ -189,11 +175,10 @@ index 6100d3b75..656b03a47 100644
 +					reg = <0x000000 0x80000>;
 +				};
 +			};
-+
+
  			sram_d: sram@10000 {
  				compatible = "mmio-sram";
- 				reg = <0x00010000 0x1000>;
-@@ -62,6 +104,199 @@
+@@ -62,6 +108,198 @@
  			};
  		};
  
@@ -341,8 +326,7 @@ index 6100d3b75..656b03a47 100644
 +		};
 +
 +		mmc1: mmc@1c10000 {
-+			compatible = "allwinner,suniv-f1c100s-mmc",
-+					 "allwinner,sun7i-a20-mmc";
++			compatible = "allwinner,suniv-f1c100s-mmc", "allwinner,sun7i-a20-mmc";
 +			reg = <0x01c10000 0x1000>;
 +			clocks = <&ccu CLK_BUS_MMC1>,
 +				 <&ccu CLK_MMC1>,
@@ -393,11 +377,11 @@ index 6100d3b75..656b03a47 100644
  		ccu: clock@1c20000 {
  			compatible = "allwinner,suniv-f1c100s-ccu";
  			reg = <0x01c20000 0x400>;
-@@ -93,6 +328,66 @@
+@@ -93,6 +331,66 @@
  				pins = "PE0", "PE1";
  				function = "uart0";
  			};
-+
++			
 +			spi0_pins: spi0-pins {
 +				pins = "PC0", "PC1", "PC2", "PC3";
 +				function = "spi0";
@@ -460,15 +444,8 @@ index 6100d3b75..656b03a47 100644
  		};
  
  		timer@1c20c00 {
-@@ -104,10 +399,72 @@
- 
- 		wdt: watchdog@1c20ca0 {
- 			compatible = "allwinner,suniv-f1c100s-wdt",
--				     "allwinner,sun6i-a31-wdt";
-+				     "allwinner,sun6i-a31-wdt"; // add
- 			reg = <0x01c20ca0 0x20>;
-			interrupts = <16>;
-			clocks = <&osc32k>;
+@@ -110,6 +408,69 @@
+ 			clocks = <&osc32k>;
  		};
  
 +		pwm: pwm@1c21000 {
@@ -533,10 +510,11 @@ index 6100d3b75..656b03a47 100644
 +			pinctrl-names = "default";
 +			status = "disabled";	
 +		};
++
  		uart0: serial@1c25000 {
  			compatible = "snps,dw-apb-uart";
  			reg = <0x01c25000 0x400>;
-@@ -140,5 +497,131 @@
+@@ -142,5 +503,131 @@
  			resets = <&ccu 26>;
  			status = "disabled";
  		};
@@ -668,6 +646,3 @@ index 6100d3b75..656b03a47 100644
 +		};
  	};
  };
--- 
-2.28.0
-
