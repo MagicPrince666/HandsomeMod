@@ -464,9 +464,11 @@ index 6100d3b75..656b03a47 100644
  
  		wdt: watchdog@1c20ca0 {
  			compatible = "allwinner,suniv-f1c100s-wdt",
--				     "allwinner,sun4i-a10-wdt";
-+				     "allwinner,sun6i-a31-wdt";
+-				     "allwinner,sun6i-a31-wdt";
++				     "allwinner,sun6i-a31-wdt"; // add
  			reg = <0x01c20ca0 0x20>;
+			interrupts = <16>;
+			clocks = <&osc32k>;
  		};
  
 +		pwm: pwm@1c21000 {
