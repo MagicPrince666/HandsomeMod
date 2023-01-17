@@ -1,0 +1,18 @@
+Index: u-boot-2020.04/Makefile
+===================================================================
+--- u-boot-2020.04.orig/Makefile
++++ u-boot-2020.04/Makefile
+@@ -939,11 +939,11 @@ cmd_efipayload = $(OBJCOPY) -I binary -O
+ MKIMAGEOUTPUT ?= /dev/null
+ 
+ quiet_cmd_mkimage = MKIMAGE $@
+-cmd_mkimage = $(objtree)/tools/mkimage $(MKIMAGEFLAGS_$(@F)) -d $< $@ \
++cmd_mkimage = $(STAGING_DIR_HOST)/bin/mkimage $(MKIMAGEFLAGS_$(@F)) -d $< $@ \
+ 	>$(MKIMAGEOUTPUT) $(if $(KBUILD_VERBOSE:0=), && cat $(MKIMAGEOUTPUT))
+ 
+ quiet_cmd_mkfitimage = MKIMAGE $@
+-cmd_mkfitimage = $(objtree)/tools/mkimage $(MKIMAGEFLAGS_$(@F)) -f $(U_BOOT_ITS) -p $(CONFIG_FIT_EXTERNAL_OFFSET) $@\
++cmd_mkfitimage = $(STAGING_DIR_HOST)/bin/mkimage $(MKIMAGEFLAGS_$(@F)) -f $(U_BOOT_ITS) -p $(CONFIG_FIT_EXTERNAL_OFFSET) $@\
+ 	>$(MKIMAGEOUTPUT) $(if $(KBUILD_VERBOSE:0=), && cat $(MKIMAGEOUTPUT))
+ 
+ quiet_cmd_cat = CAT     $@
