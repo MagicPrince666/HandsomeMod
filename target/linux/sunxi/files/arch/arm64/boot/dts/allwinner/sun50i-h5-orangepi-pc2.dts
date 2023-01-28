@@ -74,7 +74,7 @@
 		compatible = "pwm-gpio";
 		#pwm-cells = <3>;
 
-		pwm-gpio = <&pio 0 10 GPIO_ACTIVE_HIGH>; // PA10
+		pwm-gpio = <&pio 0 3 GPIO_ACTIVE_HIGH>; // PA3
 	};
 
 	srf04@0 {
