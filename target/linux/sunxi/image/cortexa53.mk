@@ -80,6 +80,10 @@ TARGET_DEVICES += pine64_sopine-baseboard
 define Device/xunlong_orangepi-pc2
   DEVICE_VENDOR := Xunlong
   DEVICE_MODEL := Orange Pi PC 2
+  DEVICE_PACKAGES := usbutils usb-modeswitch v4l-utils openssh-sftp-server wpa-supplicant-mini \
+  kmod-video-core kmod-video-uvc kmod-rtc-sunxi kmod-sunxi-ir kmod-pwm-gpio kmod-spi-dev \
+  kmod-sound-core kmod-sun8i-codec kmod-usb-audio kmod-usb-storage-extras kmod-usb2 kmod-mt7601u \
+  luci 
   $(Device/sun50i-h5)
 endef
 TARGET_DEVICES += xunlong_orangepi-pc2
