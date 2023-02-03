@@ -87,13 +87,14 @@
 	rotary: rotary-encoder {
 		compatible = "rotary-encoder";
 		gpios = < &pio 0 9 GPIO_ACTIVE_HIGH >, <&pio 0 8 GPIO_ACTIVE_HIGH >; // PA8 PA9
-		linux,axis = <REL_X>;
-		// linux,axis = <1>; /* ABS_Y */
+		linux,axis = <0>; /* REL_X */
+		rotary-encoder,encoding = "gray";
 		rotary-encoder,relative-axis;
-		rotary-encoder,steps = <34>;
-		// rotary-encoder,encoding = "gray";
-		rotary-encoder,encoding = "binary";
-		rotary-encoder,rollover;
+
+		// linux,axis = <1>; /* ABS_Y */
+		// rotary-encoder,steps = <34>;
+		// rotary-encoder,encoding = "binary";
+		// rotary-encoder,rollover;
 		status = "okay";
 	};
 
