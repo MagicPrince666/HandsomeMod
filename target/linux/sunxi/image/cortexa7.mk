@@ -47,6 +47,17 @@ define Device/friendlyarm_nanopi-neo
 endef
 TARGET_DEVICES += friendlyarm_nanopi-neo
 
+define Device/cputool_cbox-neo
+  DEVICE_VENDOR := Cputools
+  DEVICE_MODEL := Cbox
+  SOC := sun8i-h3
+  DEVICE_PACKAGES := kmod-usb2 kmod-usb-storage-extras kmod-video-core \
+  kmod-usb-net kmod-usb-net-rndis openssh-sftp-server v4l-utils \
+  luci kmod-fs-ext4 kmod-fs-vfat kmod-fuse usbutils usb-modeswitch usbmuxd \
+  kmod-video-uvc wpa-supplicant-mini
+endef
+TARGET_DEVICES += cputool_cbox-neo
+
 define Device/friendlyarm_nanopi-neo-air
   DEVICE_VENDOR := FriendlyARM
   DEVICE_MODEL := NanoPi NEO Air

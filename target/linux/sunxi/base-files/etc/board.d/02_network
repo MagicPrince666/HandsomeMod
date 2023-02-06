@@ -24,6 +24,9 @@ xunlong,orangepi-r1)
 xunlong,orangepi-pc2)
     ucidef_set_interface_wan "eth0"
     ;;
+cputools,cbox)
+	ucidef_set_interface_wan "eth0"
+	;;
 licheepi,licheepi-zero-lcd)
 	ucidef_set_interface_lan_wan "usb0" "eth0"
 	;;
