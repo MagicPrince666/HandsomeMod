@@ -50,8 +50,8 @@
 	compatible = "cputools,cbox", "allwinner,sun8i-h3";
 
 	aliases {
-		serial0 = &uart1;
-		// serial1 = &uart0;
+		serial0 = &uart0;
+		serial1 = &uart1;
 	};
 
 	chosen {
@@ -95,28 +95,12 @@
 			default-state = "on";
 			linux,default-trigger = "timer";
 		};
-
-		trig {
-			label = "trig";
-			gpios = <&pio 0 2 GPIO_ACTIVE_HIGH>; //PA2
-			default-state = "off";
-		};
 	};
 
-	gpio-keys {
-		compatible = "gpio-keys";
-		#address-cells = <1>;
-		#size-cells = <0>;
-		autorepeat;
-
-		switch@0 {
-			label = "echo";
-			linux,code = <103>;
-			pinctrl-names = "default";
-			pinctrl-0 = <&sr_irq>;
-			interrupt-parent = <&r_pio>;
-			interrupts = <0 11 IRQ_TYPE_EDGE_BOTH>;//PL11
-		};
+	srf04@0 {
+		compatible = "devantech,srf04";
+		trig-gpios = <&pio 0 2 GPIO_ACTIVE_HIGH>; // PA2
+		echo-gpios = <&r_pio 0 11 GPIO_ACTIVE_HIGH>; // PL11
 	};
 
 	backlight: backlight {
@@ -132,7 +116,7 @@
 &uart0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0_pa_pins>;
-	status = "disabled";
+	status = "okay";
 };
 
 &uart1 {
@@ -216,7 +200,7 @@
 &pwm {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pwm0_pins>;
-	status = "okay";
+	status = "disabled";
 };
 
 &pio {
@@ -250,11 +234,6 @@
 	i2c0_pins: i2c0-pins {
 		pins = "PA11", "PA12";
 		function = "i2c0";
-	};
-
-	sr_irq: sr_04-pins {
-		pins = "PL11";
-		function = "gpio_in";
 	};
 
 	t_irq: t_irq-pins {
