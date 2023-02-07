@@ -54,7 +54,9 @@ define Device/cputool_cbox-neo
   DEVICE_PACKAGES := kmod-usb2 kmod-usb-storage-extras kmod-video-core \
   kmod-usb-net kmod-usb-net-rndis openssh-sftp-server v4l-utils \
   luci kmod-fs-ext4 kmod-fs-vfat kmod-fuse usbutils usb-modeswitch usbmuxd \
-  kmod-video-uvc wpa-supplicant-mini
+  kmod-video-uvc wpa-supplicant-mini kmod-sunxi-cedarx kmod-sunxi-cedrus \
+  kmod-rtc-sunxi kmod-input-touchscreen-ads7846 kmod-fb-tft-ili9341 \
+  kmod-backlight-gpio
 endef
 TARGET_DEVICES += cputool_cbox-neo
 
