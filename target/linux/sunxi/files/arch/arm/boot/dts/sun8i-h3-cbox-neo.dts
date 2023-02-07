@@ -50,12 +50,12 @@
 	compatible = "cputools,cbox", "allwinner,sun8i-h3";
 
 	aliases {
-		serial0 = &uart0;
-		serial1 = &uart1;
+		serial0 = &uart1;
+		spi0 = &spi0;
 	};
 
 	chosen {
-		stdout-path = "serial1:115200n8";
+		stdout-path = "serial0:115200n8";
 		/delete-node/ framebuffer@0;
 	};
 
@@ -108,8 +108,9 @@
 		compatible = "gpio-backlight";
 		pinctrl-names = "default";
 		pinctrl-0 = <&backlight_pins>;
-		gpios = <&pio 6 9 GPIO_ACTIVE_LOW>; // PG9
-		default-on;
+
+		gpios = <&pio 6 9 GPIO_ACTIVE_HIGH>; // PG9
+		default-off;
 		status = "okay";
 	};
 };
@@ -117,7 +118,7 @@
 &uart0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0_pa_pins>;
-	status = "okay";
+	status = "disabled";
 };
 
 &uart1 {
@@ -201,7 +202,7 @@
 &pwm {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pwm0_pins>;
-	status = "disabled";
+	status = "okay";
 };
 
 &pio {
@@ -251,6 +252,10 @@
 	status = "okay";
 };
 
+&ion {
+    status = "okay";
+};
+
 &i2c0 {
 	status = "okay";
 	pinctrl-names = "default";
@@ -259,7 +264,7 @@
 	mpu6050@68 {
 		compatible = "invensense,mpu6050";
 		reg = <0x68>;
-		status = "okay";
+		status = "disabled";
 		interrupt-parent = <&pio>;
 		interrupts = <0 0 IRQ_TYPE_EDGE_RISING>; //PA0
 		mount-matrix = "-0.984807753012208",  /* x0 */
@@ -276,7 +281,7 @@
 	mpu9250: imu@68 {
 		compatible = "invensense,mpu9250";
 		reg = <0x68>;
-		status = "disabled";
+		status = "okay";
 		interrupt-parent = <&pio>;
 		interrupts = <0 0 IRQ_TYPE_EDGE_RISING>;
 		i2c-gate {
@@ -297,7 +302,7 @@
 	bmp280: pressure@76 {
 		compatible = "bosch,bmp280";
 		reg = <0x76>;
-		status = "disabled";
+		status = "okay";
 	};
 
 	vl53l0x@29 {
@@ -305,5 +310,6 @@
 		reg = <0x29>;
 		interrupt-parent = <&pio>;
 		interrupts = <6 11 IRQ_TYPE_EDGE_FALLING>; //PG11
+		status = "okay";
 	};
 };
