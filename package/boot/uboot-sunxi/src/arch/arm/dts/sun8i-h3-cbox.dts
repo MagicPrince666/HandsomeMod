@@ -52,14 +52,13 @@
 	compatible = "cputools,cbox", "allwinner,sun8i-h3";
 
 	aliases {
-		serial0 = &uart0;
-		serial1 = &uart1;
+		serial0 = &uart1;
 		spi0 = &spi0;
 		ethernet0 = &emac;
 	};
 
 	chosen {
-		stdout-path = "serial1:115200n8";
+		stdout-path = "serial0:115200n8";
 	};
 
 	leds {
@@ -68,13 +67,19 @@
 		status {
 			label = "nanopi:blue:status";
 			gpios = <&pio 0 10 GPIO_ACTIVE_HIGH>;
-			linux,default-trigger = "heartbeat";
+			default-state = "on";
 		};
 
 		pwr {
 			label = "nanopi:green:pwr";
 			gpios = <&r_pio 0 10 GPIO_ACTIVE_HIGH>;
 			default-state = "on";
+		};
+
+		backlight {
+			label = "backlight";
+			gpios = <&pio 6 9 GPIO_ACTIVE_HIGH>;
+			default-state = "off";
 		};
 	};
 
@@ -85,7 +90,7 @@
 
 		gpios = <&pio 6 9 GPIO_ACTIVE_HIGH>; /* PG 9 */
 		default-on;
-		status = "okay";
+		status = "disabled";
 	};
 };
 
@@ -108,7 +113,7 @@
 &uart0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart0_pins_pa>;
-	status = "okay";
+	status = "disabled";
 };
 
 &uart1 {
