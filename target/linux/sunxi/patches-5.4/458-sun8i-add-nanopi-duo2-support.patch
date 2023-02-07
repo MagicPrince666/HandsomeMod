@@ -13,11 +13,12 @@ diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
 index 5e3f0504a..0379baea4 100644
 --- a/arch/arm/boot/dts/Makefile
 +++ b/arch/arm/boot/dts/Makefile
-@@ -1110,6 +1110,7 @@ dtb-$(CONFIG_MACH_SUN8I) += \
+@@ -1110,6 +1110,8 @@ dtb-$(CONFIG_MACH_SUN8I) += \
  	sun8i-h3-nanopi-neo.dtb \
  	sun8i-h3-nanopi-neo-air.dtb \
  	sun8i-h3-nanopi-r1.dtb \
 +	sun8i-h3-nanopi-duo2.dtb \
++	sun8i-h3-cbox-neo.dtb \
  	sun8i-h3-orangepi-2.dtb \
  	sun8i-h3-orangepi-lite.dtb \
  	sun8i-h3-orangepi-one.dtb \
