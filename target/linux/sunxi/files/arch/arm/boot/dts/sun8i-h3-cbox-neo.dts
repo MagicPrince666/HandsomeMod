@@ -117,13 +117,13 @@
 
 &uart0 {
 	pinctrl-names = "default";
-	pinctrl-0 = <&uart0_pa_pins>;
+	pinctrl-0 = <&uart0_pins_pa>;
 	status = "disabled";
 };
 
 &uart1 {
 	pinctrl-names = "default";
-	pinctrl-0 = <&uart1_pins>;
+	pinctrl-0 = <&uart1_pins_pa>;
 	status = "okay";
 };
 
@@ -201,30 +201,40 @@
 
 &pwm {
 	pinctrl-names = "default";
-	pinctrl-0 = <&pwm0_pins>;
+	pinctrl-0 = <&pwm0_pins_pa>;
+	status = "okay";
+};
+
+&rtc {
+	compatible = "allwinner,sun8i-h3-rtc";
 	status = "okay";
 };
 
 &pio {
+	uart0_pins_pa: uart0-pa-pins {
+		pins = "PA4", "PA5";
+		function = "uart0";
+	};
+
+	uart1_pins_pa: uart1-pins {
+		pins = "PG6", "PG7";
+		function = "uart1";
+	};
+
 	spi0_pins: spi0-pins {
 		pins = "PC0", "PC1", "PC2", "PC3";
 		function = "spi0";
    	};
-
-	pwm0_pins: pwm0 {
-        pins = "PA5";
-        function = "pwm0";
-		drive-strength = <30>;
-	};
 
 	spi0_pins_cs1: spi0_pins_cs1 {
 		pins = "PC3", "PA3";
 		function = "gpio_out";
 	};
 
-	uart1_pins: uart1-pins {
-		pins = "PG6", "PG7";
-		function = "uart1";
+	pwm0_pins_pa: pwm0 {
+        pins = "PA5";
+        function = "pwm0";
+		drive-strength = <30>;
 	};
 
 	backlight_pins: backlight-pins {

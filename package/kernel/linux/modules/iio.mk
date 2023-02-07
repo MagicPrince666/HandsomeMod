@@ -206,6 +206,7 @@ define KernelPackage/iio-bmp280
   DEPENDS:=+kmod-iio-core +kmod-regmap-core
   KCONFIG:=CONFIG_BMP280
   FILES:=$(LINUX_DIR)/drivers/iio/pressure/bmp280.ko
+  AUTOLOAD:=$(call AutoProbe,bmp280)
 endef
 
 define KernelPackage/iio-bmp280/description
@@ -545,6 +546,21 @@ endef
 
 $(eval $(call KernelPackage,iio-fxos8700-spi))
 
+define KernelPackage/iio-inv-mpu6050
+  SUBMENU:=$(IIO_MENU)
+  TITLE:=MPU6050 IIO_TRIGGERED_BUFFER
+  DEPENDS:=+kmod-iio-core
+  KCONFIG:=CONFIG_INV_MPU6050_IIO
+  FILES:=$(LINUX_DIR)/drivers/iio/imu/inv_mpu6050/inv-mpu6050.ko
+  AUTOLOAD:=$(call AutoProbe,inv-mpu6050)
+endef
+
+define KernelPackage/iio-inv-mpu6050/description
+ inv-mpu6050 drivers for Invensense MPU devices and combos
+endef
+
+$(eval $(call KernelPackage,iio-inv-mpu6050))
+
 define KernelPackage/inv-mpu6050-i2c
   SUBMENU:=$(IIO_MENU)
   DEPENDS:=+kmod-i2c-mux +kmod-i2c-core +kmod-industrialio-triggered-buffer
@@ -564,7 +580,7 @@ $(eval $(call KernelPackage,inv-mpu6050-i2c))
 
 define KernelPackage/inv-mpu6050-spi
   SUBMENU:=$(IIO_MENU)
-  DEPENDS:=
+  DEPENDS:=+kmod-spi-bitbang
   TITLE:=Invensense MPU6050 devices (SPI)
   KCONFIG:=CONFIG_INV_MPU6050_SPI
   FILES:= \
