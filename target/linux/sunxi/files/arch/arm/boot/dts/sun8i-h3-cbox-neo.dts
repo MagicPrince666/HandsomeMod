@@ -40,7 +40,10 @@
  *     OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "sun8i-h3-nanopi.dtsi"
+/dts-v1/;
+#include "sun8i-h3.dtsi"
+#include "sunxi-common-regulators.dtsi"
+
 #include <dt-bindings/pwm/pwm.h>
 #include <dt-bindings/gpio/gpio.h>
 #include <dt-bindings/input/input.h>
@@ -57,27 +60,6 @@
 	chosen {
 		stdout-path = "serial0:115200n8";
 		/delete-node/ framebuffer@0;
-	};
-
-	soc {
-		codec: codec@1c22c00 {
-			#sound-dai-cells = <0>;
-			compatible = "allwinner,sun8i-h3-codec";
-			reg = <0x01c22c00 0x400>;
-			interrupts = <GIC_SPI 29 IRQ_TYPE_LEVEL_HIGH>;
-			clocks = <&ccu CLK_BUS_CODEC>, <&ccu CLK_AC_DIG>;
-			clock-names = "apb", "codec";
-			resets = <&ccu RST_BUS_CODEC>;
-			dmas = <&dma 15>, <&dma 15>;
-			dma-names = "rx", "tx";
-			allwinner,codec-analog-controls = <&codec_analog>;
-			status = "disabled";
-		};
-
-		codec_analog: codec-analog@1f015c0 {
-			compatible = "allwinner,sun8i-h3-codec-analog";
-			reg = <0x01f015c0 0x4>;
-		};
 	};
 
 	leds {
@@ -110,7 +92,7 @@
 		pinctrl-0 = <&backlight_pins>;
 
 		gpios = <&pio 6 9 GPIO_ACTIVE_HIGH>; // PG9
-		default-off;
+		default-on;
 		status = "okay";
 	};
 };
@@ -125,6 +107,15 @@
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart1_pins_pa>;
 	status = "okay";
+};
+
+&mmc0 {
+	pinctrl-0 = <&mmc0_pins_pa>;
+	pinctrl-names = "default";
+	bus-width = <4>;
+	cd-gpios = <&pio 5 6 GPIO_ACTIVE_LOW>;
+	status = "okay";
+	vmmc-supply = <&reg_vcc3v3>;
 };
 
 &ehci0 {
@@ -237,6 +228,14 @@
 		function = "uart1";
 	};
 
+	mmc0_pins_pa: mmc0-pins {
+		pins = "PF0", "PF1", "PF2", "PF3",
+				"PF4", "PF5";
+		function = "mmc0";
+		drive-strength = <30>;
+		bias-pull-up;
+	};
+
 	spi0_pins: spi0-pins {
 		pins = "PC0", "PC1", "PC2", "PC3";
 		function = "spi0";
@@ -278,6 +277,10 @@
 	status = "okay";
 };
 
+&mali {
+    status = "okay";
+};
+
 &ion {
     status = "okay";
 };
@@ -293,23 +296,13 @@
 		status = "disabled";
 		interrupt-parent = <&pio>;
 		interrupts = <0 0 IRQ_TYPE_EDGE_RISING>; //PA0
-		mount-matrix = "-0.984807753012208",  /* x0 */
-		               "0",                   /* y0 */
-		               "-0.173648177666930",  /* z0 */
-		               "0",                   /* x1 */
-		               "-1",                  /* y1 */
-		               "0",                   /* z1 */
-		               "-0.173648177666930",  /* x2 */
-		               "0",                   /* y2 */
-		               "0.984807753012208";   /* z2 */
+		orientation = <0xff 0 0 0 1 0 0 0 0xff>;
 	};
 
 	mpu9250: imu@68 {
 		compatible = "invensense,mpu9250";
 		reg = <0x68>;
 		status = "okay";
-		interrupt-parent = <&pio>;
-		interrupts = <0 0 IRQ_TYPE_EDGE_RISING>;
 		i2c-gate {
 			#address-cells = <1>;
 			#size-cells = <0>;
@@ -318,11 +311,6 @@
 				reg = <0x0c>;
 			};
 		};
-		/*invensense,int_config = <0x10>;
-		invensense,level_shifter = <0>;
-		invensense,orientation = [01 00 00 00 01 00 00 00 01];
-		invensense,sec_slave_type = <0>;
-		invensense,key = [4e cc 7e eb f6 1e 35 22 00 34 0d 65 32 e9 94 89];*/
 	};
 
 	bmp280: pressure@76 {

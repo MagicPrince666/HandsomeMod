@@ -56,7 +56,7 @@ define Device/cputool_cbox-neo
   luci kmod-fs-ext4 kmod-fs-vfat kmod-fuse usbutils usb-modeswitch usbmuxd \
   kmod-video-uvc wpa-supplicant-mini kmod-sunxi-cedarx kmod-sunxi-cedrus \
   kmod-rtc-sunxi kmod-input-touchscreen-ads7846 kmod-fb-tft-ili9341 \
-  kmod-backlight-gpio
+  kmod-backlight-gpio kmod-video-mali kmod-usb-audio kmod-sun8i-codec
 endef
 TARGET_DEVICES += cputool_cbox-neo
 
