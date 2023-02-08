@@ -40,9 +40,7 @@
  *     OTHER DEALINGS IN THE SOFTWARE.
  */
 
-/dts-v1/;
-#include "sun8i-h3.dtsi"
-#include "sunxi-common-regulators.dtsi"
+#include "sun8i-h3-nanopi.dtsi"
 
 #include <dt-bindings/pwm/pwm.h>
 #include <dt-bindings/gpio/gpio.h>
@@ -213,7 +211,6 @@
 };
 
 &rtc {
-	compatible = "allwinner,sun8i-h3-rtc";
 	status = "okay";
 };
 
@@ -285,6 +282,10 @@
     status = "okay";
 };
 
+&ccu {
+	status = "okay";
+};
+
 &i2c0 {
 	status = "okay";
 	pinctrl-names = "default";
@@ -302,7 +303,7 @@
 	mpu9250: imu@68 {
 		compatible = "invensense,mpu9250";
 		reg = <0x68>;
-		status = "okay";
+		status = "disabled";
 		i2c-gate {
 			#address-cells = <1>;
 			#size-cells = <0>;
@@ -316,7 +317,7 @@
 	bmp280: pressure@76 {
 		compatible = "bosch,bmp280";
 		reg = <0x76>;
-		status = "okay";
+		status = "disabled";
 	};
 
 	vl53l0x@29 {
@@ -324,6 +325,6 @@
 		reg = <0x29>;
 		interrupt-parent = <&pio>;
 		interrupts = <6 11 IRQ_TYPE_EDGE_FALLING>; //PG11
-		status = "okay";
+		status = "disabled";
 	};
 };
