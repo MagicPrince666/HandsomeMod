@@ -308,7 +308,7 @@
 	mpu9250: imu@68 {
 		compatible = "invensense,mpu9250";
 		reg = <0x68>;
-		status = "okay";
+		status = "disabled";
 		i2c-gate {
 			#address-cells = <1>;
 			#size-cells = <0>;
