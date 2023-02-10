@@ -302,7 +302,7 @@ define U-Boot/orangepi_pc2
   NAME:=Xunlong Orange Pi PC2
   BUILD_DEVICES:=xunlong_orangepi-pc2
   DEPENDS:=+PACKAGE_u-boot-orangepi_pc2:arm-trusted-firmware-sunxi
-  UENV:=a64
+  UENV:=h5
 endef
 
 define U-Boot/Bananapi_M2_Ultra
