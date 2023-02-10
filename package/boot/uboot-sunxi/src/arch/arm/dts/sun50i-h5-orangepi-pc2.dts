@@ -20,8 +20,9 @@
 	};
 
 	aliases {
-		serial0 = &uart1;
-		serial1 = &uart0;
+		serial0 = &uart0;
+		serial1 = &uart1;
+		serial2 = &uart2;
 		ethernet0 = &emac;
 		spi0 = &spi0;
 	};
@@ -104,15 +105,15 @@
 };
 
 &ehci1 {
-	status = "okay";
+	status = "disabled";
 };
 
 &ehci2 {
-	status = "okay";
+	status = "disabled";
 };
 
 &ehci3 {
-	status = "okay";
+	status = "disabled";
 };
 
 &emac {
@@ -148,13 +149,18 @@
 };
 
 &mmc0 {
+	compatible = "allwinner,sun50i-h5-mmc", "allwinner,sun50i-a64-mmc";
 	pinctrl-0 = <&mmc0_pins_a>;
 	pinctrl-names = "default";
-	broken-cd;
 	bus-width = <4>;
-	// cd-gpios = <&pio 5 6 GPIO_ACTIVE_LOW>; /* PF6 */
+	// broken-cd;
+	cd-gpios = <&pio 5 6 GPIO_ACTIVE_LOW>; /* PF6 */
 	vmmc-supply = <&reg_vcc3v3>;
 	status = "okay";
+};
+
+&mmc1 {
+	status = "disabled";
 };
 
 &ohci0 {
@@ -162,15 +168,15 @@
 };
 
 &ohci1 {
-	status = "okay";
+	status = "disabled";
 };
 
 &ohci2 {
-	status = "okay";
+	status = "disabled";
 };
 
 &ohci3 {
-	status = "okay";
+	status = "disabled";
 };
 
 &spi0  {
@@ -207,19 +213,27 @@
 
 &uart2 {
 	pinctrl-names = "default";
-	pinctrl-0 = <&uart2_pins>;
-	status = "disabled";
+	pinctrl-0 = <&uart2_pins_pa>;
+	status = "okay";
 };
 
 &pio {
 	uart0_pins_pa: uart0-pa-pins {
 		pins = "PA4", "PA5";
 		function = "uart0";
+		bias-pull-up;
 	};
 
 	uart1_pins_pa: uart1-pins {
 		pins = "PG6", "PG7";
 		function = "uart1";
+		bias-pull-up;
+	};
+
+	uart2_pins_pa: uart2-pins {
+		pins = "PA0", "PA1";
+		function = "uart2";
+		bias-pull-up;
 	};
 
 	mmc0_pins_a: mmc0-pins {
@@ -240,5 +254,13 @@
 	/* USB Type-A ports' VBUS is always on */
 	usb0_id_det-gpios = <&pio 6 12 GPIO_ACTIVE_HIGH>; /* PG12 */
 	usb0_vbus-supply = <&reg_usb0_vbus>;
+	status = "okay";
+};
+
+&ccu {
+	status = "okay";
+};
+
+&rtc {
 	status = "okay";
 };

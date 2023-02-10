@@ -14,11 +14,14 @@ Index: u-boot-2020.07/arch/arm/mach-sunxi/board.c
 ===================================================================
 --- u-boot-2020.07.orig/arch/arm/mach-sunxi/board.c
 +++ u-boot-2020.07/arch/arm/mach-sunxi/board.c
-@@ -113,6 +113,13 @@ static int gpio_init(void)
+@@ -113,6 +113,16 @@ static int gpio_init(void)
  	sunxi_gpio_set_cfgpin(SUNXI_GPA(4), SUN8I_H3_GPA_UART0);
  	sunxi_gpio_set_cfgpin(SUNXI_GPA(5), SUN8I_H3_GPA_UART0);
  	sunxi_gpio_set_pull(SUNXI_GPA(5), SUNXI_GPIO_PULL_UP);
-+#elif CONFIG_CONS_INDEX == 2 && (defined(CONFIG_MACH_SUN8I_H3) || defined(CONFIG_MACH_SUN50I_H5))
++	sunxi_gpio_set_cfgpin(SUNXI_GPG(6), SUN8I_H3_GPG_UART1);
++	sunxi_gpio_set_cfgpin(SUNXI_GPG(7), SUN8I_H3_GPG_UART1);
++	sunxi_gpio_set_pull(SUNXI_GPG(7), SUNXI_GPIO_PULL_UP);
++#elif CONFIG_CONS_INDEX == 2 && (defined(CONFIG_MACH_SUNXI_H3_H5))
 +	sunxi_gpio_set_cfgpin(SUNXI_GPG(6), SUN8I_H3_GPG_UART1);
 +	sunxi_gpio_set_cfgpin(SUNXI_GPG(7), SUN8I_H3_GPG_UART1);
 +	sunxi_gpio_set_pull(SUNXI_GPG(7), SUNXI_GPIO_PULL_UP);
@@ -37,7 +40,7 @@ Index: u-boot-2020.07/include/configs/sunxi-common.h
  #define OF_STDOUT_PATH		"/soc@01c00000/serial@01c28000:115200"
  #endif
 -#elif CONFIG_CONS_INDEX == 2 && (defined(CONFIG_MACH_SUN5I) || defined(CONFIG_MACH_SUNIV))
-+#elif CONFIG_CONS_INDEX == 2 && (defined(CONFIG_MACH_SUN5I) || defined(CONFIG_MACH_SUNIV) || defined(CONFIG_MACH_SUN8I_H3) || defined(CONFIG_MACH_SUN50I_H5))
++#elif CONFIG_CONS_INDEX == 2 && (defined(CONFIG_MACH_SUN5I) || defined(CONFIG_MACH_SUNIV) || defined(CONFIG_MACH_SUNXI_H3_H5))
  #define OF_STDOUT_PATH		"/soc@01c00000/serial@01c28400:115200"
  #elif CONFIG_CONS_INDEX == 3 && defined(CONFIG_MACH_SUN8I)
  #define OF_STDOUT_PATH		"/soc@01c00000/serial@01c28800:115200"
