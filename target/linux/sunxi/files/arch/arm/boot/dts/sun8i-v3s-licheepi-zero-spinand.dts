@@ -288,6 +288,7 @@
 		compatible = "spi-nand";
 		reg = <0>;
 		spi-max-frequency = <50000000>;
+		status = "okey";
 
 		partitions {
 			compatible = "fixed-partitions";

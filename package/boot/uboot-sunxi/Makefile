@@ -323,6 +323,12 @@ define U-Boot/LicheePi_Zero
   BUILD_DEVICES:=sipeed_licheepi-zero-dock
 endef
 
+define U-Boot/LicheePi_Zero_SPINAND
+  BUILD_SUBTARGET:=cortexa7
+  NAME:=U-Boot for LicheePi Zero (V3s) SPINAND
+  BUILD_DEVICES:=sipeed_licheepi-zero-spinand
+endef
+
 define U-Boot/LicheePi_Nano
   BUILD_SUBTARGET:=arm9
   NAME:=U-Boot for Sipeed Lichee Pi Nano (F1C100s)
@@ -430,6 +436,7 @@ UBOOT_TARGETS := \
 	libretech_all_h3_cc_h5 \
 	q8_a33_tablet_1024x600 \
 	LicheePi_Zero \
+  LicheePi_Zero_SPINAND \
 	LicheePi_Nano \
 	widora_tiny200_v2 \
 	widora_tiny200_v3 \

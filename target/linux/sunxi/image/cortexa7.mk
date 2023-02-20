@@ -272,6 +272,15 @@ endef
 
 TARGET_DEVICES += sipeed_licheepi-zero-dock
 
+define Device/sipeed_licheepi-zero-spinand
+  DEVICE_VENDOR := Sipeed
+  DEVICE_MODEL := Lichee Pi Zero With SPINAND
+  DEVICE_PACKAGES:=kmod-rtc-sunxi
+  SOC := sun8i-v3s
+endef
+
+TARGET_DEVICES += sipeed_licheepi-zero-spinand
+
 define Device/sinlinx_sinlinx-sinv3s
   DEVICE_VENDOR := SinLinx
   DEVICE_MODEL := SinV3s
