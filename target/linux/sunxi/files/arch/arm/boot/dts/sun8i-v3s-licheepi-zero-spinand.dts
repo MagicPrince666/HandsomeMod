@@ -244,67 +244,22 @@
     pinctrl-0 = <&spi0_pins>;
     status = "okay";
 
-	spi-nor@0 {
-		#address-cells = <1>;
-		#size-cells = <1>;
-		compatible = "winbond,w25q128", "jedec,spi-nor";
-		reg = <0>;
-		spi-max-frequency = <50000000>;
-		status = "disabled";
-
-		partitions {
-			compatible = "fixed-partitions";
-			#address-cells = <1>;
-			#size-cells = <1>;
-
-			partition@0 {
-				label = "u-boot";
-				reg = <0x000000 0x70000>;
-				read-only;
-			};
-
-			partition@1 {
-				label = "kernel";
-				reg = <0x70000 0x590000>;
-				read-only;
-			};
-
-			partition@2 {
-				label = "rom";
-				reg = <0x600000 0x700000>;
-				read-only;
-			};
-
-			partition@3 {
-				label = "overlay";
-				reg = <0xd00000 0x300000>;
-			};
-		};
-	};
-
-	spi-nand@0 {
+	flash: spinand@0 {
 		#address-cells = <1>;
 		#size-cells = <1>;
 		compatible = "spi-nand";
 		reg = <0>;
-		spi-max-frequency = <50000000>;
-		status = "okey";
+		spi-max-frequency = <100000000>;
 
-		partitions {
-			compatible = "fixed-partitions";
-			#address-cells = <1>;
-			#size-cells = <1>;
-
-			boot@0 {
-				label = "boot";
-				reg = <0x0000000 0x0100000>;
-			};
-
-			ubi0@100000 {
-				label = "ubi0";
-				reg = <0x0100000 0x0000000>;
-			};
-
+		boot@0 {
+			label = "boot";
+			reg = <0x0000000 0x0100000>;
 		};
+
+		ubi0@100000 {
+			label = "ubi0";
+			reg = <0x0100000 0x0000000>;
+		};
+
 	};
 };

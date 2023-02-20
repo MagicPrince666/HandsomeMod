@@ -30,9 +30,9 @@ CONFIG_ENV_UBI_VOLUME="ubootenv"
 CONFIG_ENV_UBI_VOLUME_REDUND="ubootenv2"
 CONFIG_MTDIDS_DEFAULT="spi-nand0=0"
 CONFIG_MTDPARTS_DEFAULT="mtdparts=0:1M(boot),-(ubi0)"
-CONFIG_BOOTCOMMAND="mtd read spi-nand0 0x41800000 0x100000 0x20000; mtd read spi-nand0 0x41000000 0x120000 0x500000; bootz 0x41000000 - 0x41800000"
+CONFIG_BOOTCOMMAND="ubifsmount ubi0:kernel; ubifsload $kernel_addr_r uImage; ubifsload $fdt_addr_r dtb; bootm 0x41000000 - 0x41800000"
 CONFIG_USE_BOOTARGS=y
-CONFIG_BOOTARGS="console=ttyS0,115200 earlyprintk panic=5 rootwait mtdparts=spi0.0:1M(uboot)ro,128k(dtb)ro,5M(kernel)ro,-(rootfs) ubi.mtd=3 root=ubi0:rootfs rw rootfstype=ubifs"
+CONFIG_BOOTARGS="console=ttyS0,115200 earlyprintk panic=5 rootwait ubi.mtd=1,2048 rootfstype=ubifs root=ubi0:rootfs rw"
 
 # CONFIG_SPI_BOOT is not set
 # CONFIG_SPL_SPI_SUPPORT is not set
