@@ -49,7 +49,9 @@
 	compatible = "licheepi,licheepi-zero", "allwinner,sun8i-v3s";
 
 	aliases {
+		ethernet0 = &emac;
 		serial0 = &uart0;
+		spi0 = &spi0;
 	};
 
 	chosen {
@@ -69,23 +71,6 @@
 			status = "okay";
 			#address-cells = <1>;
 			#size-cells = <0>;
-			spi_nand: spi-nand@0 {
-				#address-cells = <1>;
-				#size-cells = <1>;
-				compatible = "spi-nand";
-				reg = <0>;
-				/* The layout on the DolphinPi is very good, 100mhz are possible! */
-				spi-max-frequency = <50000000>;
-
-				boot@0 {
-					label = "boot";
-					reg = <0x0000000 0x0100000>;
-				};
-				ubi0@100000 {
-					label = "ubi0";
-					reg = <0x0100000 0x0000000>;
-				};
-			};
 		};
 	};
 
@@ -153,9 +138,45 @@
 	status = "okay";
 };
 
+&spi0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&spi0_pins_a>;
+	status = "okay";
+
+	spi-nor@0 {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		reg = <0>;
+		compatible = "winbond,w25q128", "jedec,spi-nor";
+		spi-max-frequency = <50000000>;
+		status = "okay";
+	};
+
+	spi-nand@1 {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		reg = <0>;
+		compatible = "spi-nand";
+		spi-max-frequency = <50000000>;
+		status = "okay";
+	};
+};
+
 &uart0 {
 	pinctrl-0 = <&uart0_pins_a>;
 	pinctrl-names = "default";
+	status = "okay";
+};
+
+&uart1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart1_pins_a>;
+	status = "okay";
+};
+
+&uart2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart2_pins_a>;
 	status = "okay";
 };
 
@@ -169,12 +190,25 @@
 	status = "okay";
 };
 
+&emac {
+	phy-handle = <&int_mii_phy>;
+	phy-mode = "mii";
+	status = "okay";
+};
+
 &pio {
-	spi0_pins: spi0-pins {
+	spi0_pins_a: spi0-pins {
 		pins = "PC0", "PC1", "PC2", "PC3";
 		function = "spi0";
-		drive-strength = <10>;
-		bias-disable;
 	};
 
+	uart1_pins_a: uart1-pins {
+		pins = "PE21", "PE22";
+		function = "uart1";
+	};
+
+	uart2_pins_a: uart2-pins {
+		pins = "PB0", "PB1";
+		function = "uart2";
+	};
 };

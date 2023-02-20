@@ -2,7 +2,7 @@ Index: u-boot-2020.07/arch/arm/mach-sunxi/Kconfig
 ===================================================================
 --- u-boot-2020.07.orig/arch/arm/mach-sunxi/Kconfig
 +++ u-boot-2020.07/arch/arm/mach-sunxi/Kconfig
-@@ -1019,12 +1019,58 @@ config SPL_STACK_R_ADDR
+@@ -1019,12 +1019,59 @@ config SPL_STACK_R_ADDR
  	default 0x4fe00000 if MACH_SUN50I_H6
  
  config SPL_SPI_SUNXI
@@ -15,6 +15,7 @@ Index: u-boot-2020.07/arch/arm/mach-sunxi/Kconfig
 +	  Enable support for SPI-Nor Flash. This option allows SPL to read from
  	  sunxi SPI Flash. It uses the same method as the boot ROM, so does
  	  not need any extra configuration.
++
 +config SPL_SPINAND_SUNXI
 +	bool "Support for SPI NAND-Flash on Allwinner SoCs in SPL"
 +	depends on MACH_SUN4I || MACH_SUN5I || MACH_SUN7I || MACH_SUNXI_H3_H5 || MACH_SUN50I || MACH_SUN8I_V3S
@@ -46,7 +47,7 @@ Index: u-boot-2020.07/arch/arm/mach-sunxi/Kconfig
 +config SPL_SPINAND_SUNXI_PAGESIZE
 +	int "NAND pagesize in KB"
 +	depends on SPL_SPINAND_SUNXI
-+	default 2048
++	default 0x800
 +	help
 +	  The sunxi BROM is only able to load 1KB per page when booting from spi-nand.
 +	  Thus the SPL is getting chunked to 1KB pages in spi-nand. To correctly calculate
