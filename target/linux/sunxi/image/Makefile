@@ -12,6 +12,9 @@ FAT32_BLOCKS=$(shell echo $$(($(CONFIG_SUNXI_SD_BOOT_PARTSIZE)*1024*1024/$(FAT32
 DEVICE_VARS := SUNXI_DTS SUNXI_DTS_DIR
 KERNEL_LOADADDR:=0x40008000
 
+CONFIG_SUNXI_SPINAND_PAGESIZE=2048
+CONFIG_SUNXI_SPINAND_BLOCKSIZE=128
+
 define Build/sunxi-sdcard
 	rm -f $@.boot
 	mkfs.fat $@.boot -C $(FAT32_BLOCKS)
@@ -27,6 +30,22 @@ define Build/sunxi-sdcard
 		$(CONFIG_TARGET_ROOTFS_PARTSIZE) \
 		$(STAGING_DIR_IMAGE)/$(DEVICE_NAME)-u-boot-with-spl.bin
 	rm -f $@.boot
+endef
+
+define Build/sunxi-spinandboot
+	./gen_sunxi_spinand_img.sh $@ \
+		$(STAGING_DIR_IMAGE)/$(DEVICE_NAME)-u-boot-with-spl.bin \
+		$(CONFIG_SUNXI_SPINAND_PAGESIZE) \
+		$(CONFIG_SUNXI_SPINAND_BLOCKSIZE) \
+		$(CONFIG_SUN8I_V3S_SPINAND_DUPLICATE_BOOT_SPL) \
+		$(CONFIG_SUN8I_V3S_SPINAND_DUPLICATE_BOOT_UBOOT)
+endef
+
+define Build/sunxi-kernelubifs
+	./gen_sunxi_kernel_ubifs.sh $@ \
+		$(DTS_DIR)/$(SUNXI_DTS).dtb \
+		$(CONFIG_SUNXI_SPINAND_PAGESIZE) \
+		$(CONFIG_SUNXI_SPINAND_BLOCKSIZE)
 endef
 
 # why \x00\x00\x00\x00 for zImage-initramfs
