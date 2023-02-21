@@ -12,9 +12,6 @@ FAT32_BLOCKS=$(shell echo $$(($(CONFIG_SUNXI_SD_BOOT_PARTSIZE)*1024*1024/$(FAT32
 DEVICE_VARS := SUNXI_DTS SUNXI_DTS_DIR
 KERNEL_LOADADDR:=0x40008000
 
-CONFIG_SUNXI_SPINAND_PAGESIZE=2048
-CONFIG_SUNXI_SPINAND_BLOCKSIZE=128
-
 define Build/sunxi-sdcard
 	rm -f $@.boot
 	mkfs.fat $@.boot -C $(FAT32_BLOCKS)
@@ -33,6 +30,7 @@ define Build/sunxi-sdcard
 endef
 
 define Build/sunxi-spinandboot
+	CONFIG_TARGET_ROOTFS_PARTSIZE=104
 	./gen_sunxi_spinand_img.sh $@ \
 		$(STAGING_DIR_IMAGE)/$(DEVICE_NAME)-u-boot-with-spl.bin \
 		$(CONFIG_SUNXI_SPINAND_PAGESIZE) \

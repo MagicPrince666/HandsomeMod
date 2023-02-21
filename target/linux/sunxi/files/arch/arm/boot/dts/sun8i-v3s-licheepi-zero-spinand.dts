@@ -54,6 +54,7 @@
         serial0 = &uart0;
         ethernet0 = &emac;
         display0 = &panel;
+        spi0 = &spi0;
     };
 
     chosen {
@@ -185,34 +186,6 @@
 &lradc {
 	vref-supply = <&reg_vcc3v0>;
 	status = "okay";
-
-	button-200 {
-		label = "Volume Up";
-		linux,code = <KEY_VOLUMEUP>;
-		channel = <0>;
-		voltage = <200000>;
-	};
-
-	button-400 {
-		label = "Volume Down";
-		linux,code = <KEY_VOLUMEDOWN>;
-		channel = <0>;
-		voltage = <400000>;
-	};
-
-	button-600 {
-		label = "Select";
-		linux,code = <KEY_SELECT>;
-		channel = <0>;
-		voltage = <600000>;
-	};
-
-	button-800 {
-		label = "Start";
-		linux,code = <KEY_OK>;
-		channel = <0>;
-		voltage = <800000>;
-	};
 };
 
 &codec {
@@ -233,15 +206,15 @@
 };
 
 &pio {
-    spi0_pins: spi0-pins {
-        pins = "PC0", "PC1", "PC2", "PC3";
-        function = "spi0";
-    };
+    //spi0_pins_a: spi0-pins {
+    //    pins = "PC0", "PC1", "PC2", "PC3";
+    //    function = "spi0";
+    //};
 };
 
 &spi0 {
-    pinctrl-names = "default";
-    pinctrl-0 = <&spi0_pins>;
+    // pinctrl-names = "default";
+    // pinctrl-0 = <&spi0_pins_a>;
     status = "okay";
 
 	flash: spinand@0 {

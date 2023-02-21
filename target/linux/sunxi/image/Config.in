@@ -34,7 +34,7 @@ config SUN8I_V3S_OFFSET_UBI
 menuconfig SUN8I_V3S_SPINAND_DUPLICATE_BOOT
 	bool "Duplicate SPL and u-boot for better fail-safty"
 	depends on TARGET_sunxi_cortexa7
-	default n
+	default y
 	help
 	  Copies the SPL multiple times to the different EGON-entrypoints and PEBs.
 	  Also copies u-boot multiple times in case one gets corrputed
