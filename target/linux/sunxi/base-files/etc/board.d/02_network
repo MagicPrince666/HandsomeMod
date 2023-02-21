@@ -30,6 +30,9 @@ cputools,cbox)
 licheepi,licheepi-zero-lcd)
 	ucidef_set_interface_lan_wan "usb0" "eth0"
 	;;
+licheepi,licheepi-zero-spinand)
+	ucidef_set_interface_wan "eth0"
+	;;
 *)
 	ucidef_set_interface_lan "eth0"
 	;;

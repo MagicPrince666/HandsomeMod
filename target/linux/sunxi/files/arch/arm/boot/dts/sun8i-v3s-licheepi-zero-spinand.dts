@@ -48,7 +48,7 @@
 
 / {
     model = "Lichee Pi Zero With Dock";
-    compatible = "licheepi,licheepi-zero-lcd", "licheepi,licheepi-zero", "allwinner,sun8i-v3s";
+    compatible = "licheepi,licheepi-zero-spinand", "licheepi,licheepi-zero", "allwinner,sun8i-v3s";
 
     aliases {
         serial0 = &uart0;
