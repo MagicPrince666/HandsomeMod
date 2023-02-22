@@ -10,30 +10,26 @@ config SUNXI_IS_BOOT_FROM_MMC1
 
 menuconfig SUN8I_V3S_SPINAND_OPTIONS
 	bool "SPI-NAND options"
-	default y if TARGET_sunxi_cortexa7
+	default y
 
 config SUNXI_SPINAND_PAGESIZE
 	int "SPI-NAND pagesize size"
-	depends on TARGET_sunxi_cortexa7
 	depends on SUN8I_V3S_SPINAND_OPTIONS
 	default 2048
 	range 1024 8192
 
 config SUNXI_SPINAND_BLOCKSIZE
 	int "SPI-NAND block-size (in KiB)"
-	depends on TARGET_sunxi_cortexa7
 	depends on SUN8I_V3S_SPINAND_OPTIONS
 	default 128
 
 config SUN8I_V3S_OFFSET_UBI
 	int "Offset of ubi in the spi-nand"
-	depends on TARGET_sunxi_cortexa7
 	depends on SUN8I_V3S_SPINAND_OPTIONS
 	default 1048576 if SUNXI_SPINAND_PAGESIZE = 2048
 
 menuconfig SUN8I_V3S_SPINAND_DUPLICATE_BOOT
 	bool "Duplicate SPL and u-boot for better fail-safty"
-	depends on TARGET_sunxi_cortexa7
 	default y
 	help
 	  Copies the SPL multiple times to the different EGON-entrypoints and PEBs.
