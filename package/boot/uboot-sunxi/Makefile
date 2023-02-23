@@ -436,7 +436,7 @@ UBOOT_TARGETS := \
 	orangepi_plus \
 	orangepi_2 \
 	orangepi_pc2 \
-  rangepi_pc2-spinand \
+  orangepi_pc2-spinand \
 	pangolin \
 	pine64_plus \
 	sopine_baseboard \

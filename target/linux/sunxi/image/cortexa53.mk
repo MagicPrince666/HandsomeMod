@@ -89,20 +89,20 @@ endef
 TARGET_DEVICES += xunlong_orangepi-pc2
 
 define Device/xunlong_orangepi-pc2-spinand
-  DEVICE_VENDOR := Xunlong
-  DEVICE_MODEL := Orange Pi PC 2 (SPINAND)
-  DEVICE_PACKAGES := usbutils usb-modeswitch v4l-utils openssh-sftp-server wpa-supplicant-mini \
-  kmod-video-core kmod-video-uvc kmod-rtc-sunxi kmod-sunxi-ir kmod-pwm-gpio kmod-spi-dev \
-  kmod-sound-core kmod-sun8i-codec kmod-usb-audio kmod-usb-storage-extras kmod-usb2 kmod-mt7601u \
-  luci kmod-fs-ext4 kmod-fs-ntfs kmod-fs-vfat kmod-fuse
-  SOC := sun50i-h5
-  SUNXI_DTS_DIR := allwinner/
-  KERNEL_NAME := Image
+	DEVICE_VENDOR := Xunlong
+	DEVICE_MODEL := Orange Pi PC 2 (SPINAND)
+	DEVICE_PACKAGES := usbutils usb-modeswitch v4l-utils openssh-sftp-server wpa-supplicant-mini \
+		kmod-video-core kmod-video-uvc kmod-rtc-sunxi kmod-sunxi-ir kmod-pwm-gpio kmod-spi-dev \
+		kmod-sound-core kmod-sun8i-codec kmod-usb-audio kmod-usb-storage-extras kmod-usb2 kmod-mt7601u \
+		luci kmod-fs-ext4 kmod-fs-ntfs kmod-fs-vfat kmod-fuse
+	SOC := sun50i-h5
+	SUNXI_DTS_DIR := allwinner/
+	KERNEL_NAME := Image
 
-	SUPPORTED_DEVICES:=xunlong,orangepi-pc2
-	SUNXI_DTS:=sun50i-h5-orangepi-pc2
+	SUPPORTED_DEVICES := orangepi-pc2-spinand
+  SUNXI_DTS := $$(SUNXI_DTS_DIR)$$(SOC)-orangepi-pc2
 
-	KERNEL := kernel-bin | Image | sunxi-kernelubifs
+	KERNEL := kernel-bin | sunxi-kernelubifs
 	IMAGES := ubispinand.img.gz
 	
 	MKUBIFS_OPTS := -F -m $(CONFIG_SUNXI_SPINAND_PAGESIZE) -e $(shell echo $$(($(CONFIG_SUNXI_SPINAND_BLOCKSIZE) - (($(CONFIG_SUNXI_SPINAND_PAGESIZE)/1024)*2))))KiB -c 880 -U
@@ -115,7 +115,7 @@ define Device/xunlong_orangepi-pc2-spinand
 	IMAGE_SIZE := $(CONFIG_TARGET_ROOTFS_PARTSIZE)m
 	KERNEL_IN_UBI := 1
 	UBOOTENV_IN_UBI := 1
-	# UBINIZE_PARTS := dtb=$(DTS_DIR)/$$(SUNXI_DTS).dtb=1
+
 	IMAGE/ubispinand.img.gz := \
 		sunxi-spinandboot | \
 		pad-to $$(CONFIG_SUN8I_V3S_OFFSET_UBI) | \
