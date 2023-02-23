@@ -1,14 +1,24 @@
 CONFIG_ARM=y
 CONFIG_ARCH_SUNXI=y
 CONFIG_SPL=y
-CONFIG_MACH_SUN8I_V3S=y
-CONFIG_DRAM_CLK=360
+CONFIG_MACH_SUN50I_H5=y
+CONFIG_DRAM_CLK=672
+CONFIG_DRAM_ZQ=3881977
+# CONFIG_DRAM_ODT_EN is not set
+CONFIG_MACPWR="PD6"
+CONFIG_MMC0_CD_PIN="PF6"
+CONFIG_SPL_SPI_SUNXI=y
+# CONFIG_SYS_MALLOC_CLEAR_ON_INIT is not set
+CONFIG_DEFAULT_DEVICE_TREE="sun50i-h5-orangepi-pc2"
+CONFIG_SUN8I_EMAC=y
+CONFIG_USB_EHCI_HCD=y
+CONFIG_USB_OHCI_HCD=y
+CONFIG_USB_MUSB_GADGET=y
 CONFIG_BOOTDELAY=0
 CONFIG_SYS_PROMPT="Prince> "
-CONFIG_DEFAULT_DEVICE_TREE="sun8i-v3s-licheepi-zero-spinand"
+CONFIG_CONS_INDEX=1
+
 # CONFIG_NETDEVICES is not set
-CONFIG_DRAM_ZQ=14779
-CONFIG_SUN8I_EMAC=y
 CONFIG_DM_ETH=y
 CONFIG_MII=y
 CONFIG_DM_MDIO_MUX=y
@@ -30,16 +40,15 @@ CONFIG_ENV_UBI_VOLUME="ubootenv"
 CONFIG_ENV_UBI_VOLUME_REDUND="ubootenv2"
 CONFIG_MTDIDS_DEFAULT="spi-nand0=0"
 CONFIG_MTDPARTS_DEFAULT="mtdparts=0:1M(boot),-(ubi0)"
-CONFIG_BOOTCOMMAND="ubifsmount ubi0:kernel; ubifsload $kernel_addr_r uImage; ubifsload $fdt_addr_r dtb; bootm 0x41000000 - 0x41800000"
+CONFIG_BOOTCOMMAND="ubifsmount ubi0:kernel; ubifsload $kernel_addr_r Image; ubifsload $fdt_addr_r dtb; booti $kernel_addr_r - $fdt_addr_r"
 CONFIG_USE_BOOTARGS=y
-CONFIG_BOOTARGS="console=ttyS0,115200 earlyprintk panic=5 rootwait ubi.mtd=1,2048 rootfstype=ubifs root=ubi0:rootfs rw"
+CONFIG_BOOTARGS="console=ttyS0,115200 earlyprintk earlycon=uart,mmio32,0x01c28000 rootwait ubi.mtd=1,2048 rootfstype=ubifs root=ubi0:rootfs rw"
 
 # CONFIG_SPI_BOOT is not set
 # CONFIG_SPL_SPI_SUPPORT is not set
 # CONFIG_SPL_SPI_SUNXI=y
 CONFIG_CLK=y
 CONFIG_CLK_SUNXI=y
-CONFIG_CLK_SUN8I_V3S=y
 CONFIG_SUNXI_SPI=y
 CONFIG_SPI_SUNXI=y
 CONFIG_MTD=y
