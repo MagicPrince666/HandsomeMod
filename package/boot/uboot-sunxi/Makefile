@@ -305,10 +305,10 @@ define U-Boot/orangepi_pc2
   UENV:=h5
 endef
 
-define U-Boot/orangepi_pc2-spinand
+define U-Boot/orangepi_pc2_spinand
   BUILD_SUBTARGET:=cortexa53
   NAME:=Xunlong Orange Pi PC2 (SPINAND)
-  BUILD_DEVICES:=xunlong_orangepi-pc2
+  BUILD_DEVICES:=xunlong_orangepi-pc2-spinand
   DEPENDS:=+PACKAGE_u-boot-orangepi_pc2_spinand:arm-trusted-firmware-sunxi
 endef
 
@@ -436,7 +436,7 @@ UBOOT_TARGETS := \
 	orangepi_plus \
 	orangepi_2 \
 	orangepi_pc2 \
-  orangepi_pc2-spinand \
+  orangepi_pc2_spinand \
 	pangolin \
 	pine64_plus \
 	sopine_baseboard \

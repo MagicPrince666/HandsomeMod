@@ -85,6 +85,7 @@ define Device/xunlong_orangepi-pc2
   kmod-sound-core kmod-sun8i-codec kmod-usb-audio kmod-usb-storage-extras kmod-usb2 kmod-mt7601u \
   luci kmod-fs-ext4 kmod-fs-ntfs kmod-fs-vfat kmod-fuse
   $(Device/sun50i-h5)
+  CONFIG_TARGET_ROOTFS_PARTSIZE := 7000
 endef
 TARGET_DEVICES += xunlong_orangepi-pc2
 
