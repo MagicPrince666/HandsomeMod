@@ -241,13 +241,9 @@
 		reg = <0>;
 		spi-max-frequency = <50000000>;
 		status = "okay";
-		boot@0 {
-			label = "boot";
-			reg = <0x0000000 0x0100000>;
-		};
-		ubi0@100000 {
-			label = "ubi0";
-			reg = <0x0100000 0x0000000>;
+		udisk@0 {
+			label = "udisk";
+			reg = <0x0000000 0x8000000>;
 		};
 	};
 };
@@ -352,7 +348,7 @@
 &pwm {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pwm0_pin>;
-	status = "okay";
+	status = "disabled";
 };
 
 &usb_otg {
