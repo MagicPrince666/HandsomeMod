@@ -9,6 +9,7 @@
 #include <asm/io.h>
 #include <mapmem.h>
 #include <linux/libfdt.h>
+#include <linux/delay.h>
 #include <image.h>
 
 #ifdef CONFIG_SPL_OS_BOOT

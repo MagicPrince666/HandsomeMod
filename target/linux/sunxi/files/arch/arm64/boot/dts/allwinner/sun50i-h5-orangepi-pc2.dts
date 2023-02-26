@@ -241,9 +241,13 @@
 		reg = <0>;
 		spi-max-frequency = <50000000>;
 		status = "okay";
-		udisk@0 {
-			label = "udisk";
-			reg = <0x0000000 0x8000000>;
+		boot@0 {
+			label = "boot";
+			reg = <0x0000000 0x0100000>;
+		};
+		ubi0@100000 {
+			label = "ubi0";
+			reg = <0x0100000 0x0000000>;
 		};
 	};
 };
@@ -352,7 +356,7 @@
 };
 
 &usb_otg {
-	dr_mode = "otg";
+	dr_mode = "peripheral";
 	status = "okay";
 };
 
