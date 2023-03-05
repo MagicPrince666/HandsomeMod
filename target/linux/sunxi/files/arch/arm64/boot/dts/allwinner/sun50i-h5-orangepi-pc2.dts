@@ -75,27 +75,39 @@
 		compatible = "pwm-gpio";
 		#pwm-cells = <3>;
 
-		pwm-gpio = <&pio 0 3 GPIO_ACTIVE_HIGH>; // PA3
+		pwm-gpio = <&pio 3 14 GPIO_ACTIVE_HIGH>; // PD14
 	};
 
 	srf04@0 {
 		compatible = "devantech,srf04";
-		trig-gpios = <&pio 0 7 GPIO_ACTIVE_HIGH>; // PA7
-		echo-gpios = <&pio 0 6 GPIO_ACTIVE_HIGH>; // PA6
+		trig-gpios = <&pio 2 5 GPIO_ACTIVE_HIGH>; // PC5
+		echo-gpios = <&pio 2 6 GPIO_ACTIVE_HIGH>; // PC6
 	};
 
-	rotary: rotary-encoder {
+	// backlight: backlight {
+	//	compatible = "gpio-backlight";
+	//	pinctrl-names = "default";
+	//	pinctrl-0 = <&backlight_pins>;
+
+	//	gpios = <&pio 6 9 GPIO_ACTIVE_HIGH>; /* PG 9 */
+	//	backlight-boot-off;
+	//};
+
+	rotary1: rotary-encoder {
 		compatible = "rotary-encoder";
-		gpios = < &pio 0 9 GPIO_ACTIVE_HIGH >, <&pio 0 8 GPIO_ACTIVE_HIGH >; // PA8 PA9
+		gpios = <&pio 2 7 GPIO_ACTIVE_HIGH>, <&pio 6 9 GPIO_ACTIVE_HIGH>; //PC7 PG9
 		linux,axis = <0>; /* REL_X */
 		rotary-encoder,encoding = "gray";
 		rotary-encoder,relative-axis;
+	};
 
-		// linux,axis = <1>; /* ABS_Y */
-		// rotary-encoder,steps = <34>;
-		// rotary-encoder,encoding = "binary";
-		// rotary-encoder,rollover;
-		status = "okay";
+	rotary2: rotary-encoder {
+		compatible = "rotary-encoder";
+		gpios = <&pio 6 6 GPIO_ACTIVE_HIGH>, <&pio 6 7 GPIO_ACTIVE_HIGH>; //PG6 PG7
+		linux,axis = <0>; /* REL_X */
+		rotary-encoder,encoding = "gray";
+		rotary-encoder,relative-axis;
+		status = "disabled";
 	};
 
 	reg_gmac_3v3: gmac-3v3 {
@@ -268,9 +280,25 @@
 		function = "i2c0";
 	};
 
+	i2c1_pa_pins: i2c1_pins {
+		pins = "PA18", "PA19";
+		function = "i2c1";
+	};
+
 	pwm0_pin: pwm0@0 {
 		pins = "PA5";
 		function = "pwm0";
+	};
+
+	backlight_pins: backlight-pins {
+		pins = "PG9";
+		function = "gpio_out";
+		drive-strength = <30>;
+	};
+
+	t_irq: t_irq-pins {
+		pins = "PA9";
+		function = "gpio_in";
 	};
 };
 
@@ -283,21 +311,40 @@
 	cs-gpios = <&pio 0 13 GPIO_ACTIVE_HIGH>, <&pio 0 21 GPIO_ACTIVE_HIGH>;
 	status = "okay";
 
-	psxpad@0 {
+	ili9341@0 {
+		compatible = "ilitek,ili9341";
 		reg = <0>;
-		compatible = "sony,psxpad-spi";
-		spi-max-frequency = <500000>; // 250KHz/500KHz
-		spi-cpha;
-		spi-cpol;
-		status = "disabled";
+		status = "okay";
+		spi-max-frequency = <50000000>;
+		rotate = <270>;
+		bgr;
+		fps = <30>;
+		buswidth = <8>;
+		// reset-gpios = <&pio 6 8 GPIO_ACTIVE_LOW>; // PG8
+		dc-gpios = <&pio 0 7 GPIO_ACTIVE_HIGH>;	// PA7
+		debug = <0>;
+		// backlight = <&backlight>;
 	};
 
-	spidev@0 {
-		reg = <0>;
-		compatible = "rohm,dh2228fv";
-		spi-max-frequency = <250000>;
-		spi-cpha;
-		spi-cpol;
+	tsc2046@1 {
+		reg = <1>;	/* CS1 */
+		compatible = "ti,tsc2046";
+		pinctrl-names = "default";
+		pinctrl-0 = <&t_irq>;
+		interrupt-parent = <&pio>;
+		interrupts = <0 9 IRQ_TYPE_EDGE_FALLING>;	//PA9
+		spi-max-frequency = <2000000>;
+		pendown-gpio = <&pio 0 9 GPIO_ACTIVE_HIGH>;
+		vcc-supply = <&reg_vcc3v3>;
+
+		ti,x-min = /bits/ 16 <0>;
+		ti,x-max = /bits/ 16 <320>;
+		ti,y-min = /bits/ 16 <0>;
+		ti,y-max = /bits/ 16 <240>;
+		ti,x-plate-ohms = /bits/ 16 <40>;
+		ti,pressure-max = /bits/ 16 <255>;
+
+		wakeup-source;
 		status = "okay";
 	};
 
@@ -370,14 +417,32 @@
 &i2c0 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&i2c0_pa_pins>;
+	status = "disabled";
+};
+
+&i2c1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c1_pa_pins>;
 	status = "okay";
 
-	mpu6050@68 {
-		compatible = "invensense,mpu6050";
+	mpu9250: imu@68 {
+		compatible = "invensense,mpu9250";
 		reg = <0x68>;
+		status = "okay";
 		interrupt-parent = <&pio>;
-		interrupts = <0 2 IRQ_TYPE_EDGE_RISING>; // PA2
-		orientation = <0xff 0 0 0 1 0 0 0 0xff>;
-		status = "disabled";
+		interrupts = <3 10 IRQ_TYPE_EDGE_RISING>; // PD10
+		i2c-gate {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			ax8975@c {
+				compatible = "ak,ak8975";
+				reg = <0x0c>;
+			};
+		};
+		/*invensense,int_config = <0x10>;
+		invensense,level_shifter = <0>;
+		invensense,orientation = [01 00 00 00 01 00 00 00 01];
+		invensense,sec_slave_type = <0>;
+		invensense,key = [4e cc 7e eb f6 1e 35 22 00 34 0d 65 32 e9 94 89];*/
 	};
 };
