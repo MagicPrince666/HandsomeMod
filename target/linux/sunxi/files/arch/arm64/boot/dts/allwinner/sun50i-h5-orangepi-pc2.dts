@@ -104,7 +104,7 @@
 	rotary2: rotary-encoder {
 		compatible = "rotary-encoder";
 		gpios = <&pio 6 6 GPIO_ACTIVE_HIGH>, <&pio 6 7 GPIO_ACTIVE_HIGH>; //PG6 PG7
-		linux,axis = <0>; /* REL_X */
+		linux,axis = <1>; /* REL_X */
 		rotary-encoder,encoding = "gray";
 		rotary-encoder,relative-axis;
 		status = "disabled";
