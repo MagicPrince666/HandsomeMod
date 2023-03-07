@@ -20,7 +20,7 @@ define KernelPackage/$(PKG_NAME)
   TITLE:=Esp32 cfg80211 wifi driver
   DEPENDS:=+kmod-cfg80211 +kmod-mac80211 +kmod-bluetooth +@DRIVER_11N_SUPPORT +@DRIVER_11AC_SUPPORT
   MAINTAINER:=Huangliquan <846863428@qq.com>
-  KCONFIG:= CONFIG_ESP32_SDIO
+  KCONFIG:= CONFIG_ESP32_SDIO=m
   FILES:=$(PKG_BUILD_DIR)/esp32_sdio.ko
   AUTOLOAD:=$(call AutoProbe,esp32_sdio)
 endef
