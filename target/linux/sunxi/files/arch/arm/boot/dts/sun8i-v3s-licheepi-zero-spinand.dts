@@ -143,12 +143,6 @@
     vmmc-supply = <&reg_vcc3v3>;
     status = "okay";
     mmc-pwrseq = <&wifi_pwrseq>;
-
-    esp32: sdio_wifi@1 {
-		compatible = "esp,esp32";
-		reg = <1>;
-		esp,crystal-26M-en = <2>;
-	};
 };
 
 &mmc1 {

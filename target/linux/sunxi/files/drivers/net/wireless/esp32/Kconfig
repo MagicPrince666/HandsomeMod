@@ -1,0 +1,22 @@
+config ESP32_SDIO
+	tristate "Espressif ESP32 SDIO WiFi"
+	depends on MAC80211
+	select BT
+	select BT_HCIUART
+	---help---
+	  ESP32 is a low-budget 2.4GHz WiFi chip by Espressif, used in many
+	  cheap tablets with Allwinner or Rockchip SoC
+
+config SUPPORT_ESP_SERIAL
+	bool "Enable serial support for ESP32"
+	depends on ESP32_SDIO
+	default y
+	---help---
+	  serial process support for ESP32
+
+config ENABLE_MONITOR_PROCESS
+	bool "Enable monitor process support for ESP32"
+	depends on ESP32_SDIO
+	default n
+	---help---
+	  monitor process support for ESP32

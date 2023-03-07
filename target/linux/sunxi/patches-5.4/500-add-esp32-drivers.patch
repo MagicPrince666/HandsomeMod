@@ -1,0 +1,24 @@
+Index: linux-5.4.95/drivers/net/wireless/Kconfig
+===================================================================
+--- linux-5.4.95.orig/drivers/net/wireless/Kconfig
++++ linux-5.4.95/drivers/net/wireless/Kconfig
+@@ -47,6 +47,7 @@ source "drivers/net/wireless/st/Kconfig"
+ source "drivers/net/wireless/ti/Kconfig"
+ source "drivers/net/wireless/zydas/Kconfig"
+ source "drivers/net/wireless/quantenna/Kconfig"
++source "drivers/net/wireless/esp32/Kconfig"
+ 
+ config PCMCIA_RAYCS
+ 	tristate "Aviator/Raytheon 2.4GHz wireless support"
+Index: linux-5.4.95/drivers/net/wireless/Makefile
+===================================================================
+--- linux-5.4.95.orig/drivers/net/wireless/Makefile
++++ linux-5.4.95/drivers/net/wireless/Makefile
+@@ -19,6 +19,7 @@ obj-$(CONFIG_WLAN_VENDOR_ST) += st/
+ obj-$(CONFIG_WLAN_VENDOR_TI) += ti/
+ obj-$(CONFIG_WLAN_VENDOR_ZYDAS) += zydas/
+ obj-$(CONFIG_WLAN_VENDOR_QUANTENNA) += quantenna/
++obj-$(CONFIG_ESP32_SDIO) += esp32/
+ 
+ # 16-bit wireless PCMCIA client drivers
+ obj-$(CONFIG_PCMCIA_RAYCS)	+= ray_cs.o
