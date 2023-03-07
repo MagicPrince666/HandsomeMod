@@ -42,23 +42,6 @@ endef
 
 $(eval $(call KernelPackage,net-rtl8192su))
 
-define KernelPackage/net-esp32
-  $(call KernelPackage/mac80211/Default)
-  SUBMENU:=$(WIRELESS_MENU)
-  TITLE:=ESP32 SDIO WIFI support
-  DEPENDS:=+kmod-mmc +kmod-mac80211 +kmod-bluetooth
-  KCONFIG:=\
-	CONFIG_ESP32_SDIO
-  FILES:=$(LINUX_DIR)/drivers/net/wireless/esp32/esp32_sdio.ko
-  AUTOLOAD:=$(call AutoProbe,esp32_sdio)
-endef
-
-define KernelPackage/net-esp32/description
- Kernel modules for ESP32 SDIO WIFI fullmac support.
-endef
-
-$(eval $(call KernelPackage,net-esp32))
-
 define KernelPackage/cfg80211-old
   SUBMENU:=$(WIRELESS_MENU)
   TITLE:=using orginal kernel's cfg80211
