@@ -45,8 +45,8 @@ $(eval $(call KernelPackage,net-rtl8192su))
 define KernelPackage/net-esp32
   $(call KernelPackage/mac80211/Default)
   SUBMENU:=$(WIRELESS_MENU)
-  TITLE:=ESP32 WIFI support (staging)
-  DEPENDS:=+kmod-mmc +kmod-mac80211
+  TITLE:=ESP32 SDIO WIFI support
+  DEPENDS:=+kmod-mmc +kmod-mac80211 +kmod-bluetooth
   KCONFIG:=\
 	CONFIG_ESP32_SDIO
   FILES:=$(LINUX_DIR)/drivers/net/wireless/esp32/esp32_sdio.ko
