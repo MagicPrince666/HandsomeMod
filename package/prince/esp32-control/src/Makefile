@@ -1,3 +1,4 @@
+TARGET	= esp32_tool
 CFLAGS = -C -Wall --sysroot=$(SDKTARGETSYSROOT)
 
 CFLAGS_SANITIZE = -fsanitize=undefined  -fsanitize-address-use-after-scope -fsanitize-undefined-trap-on-error  -fstack-protector-all -fstack-check -fsanitize=address -fsanitize=pointer-compare -fno-omit-frame-pointer -static-libasan
@@ -32,9 +33,9 @@ PWD := $(shell pwd)
 
 SRC += ./test_utils.c
 
-all: esp32_tool
+all: $(TARGET)
 
-esp32_tool:
+$(TARGET):
 	$(CC) $(CFLAGS) $(INCLUDE) $(SRC) $(LINKER) $(@).c -o $(@).out
 
 stress:
