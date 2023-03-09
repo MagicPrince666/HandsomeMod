@@ -64,7 +64,7 @@
     leds {
         /* The LEDs use PG0~2 pins, which conflict with MMC1 */
         compatible = "gpio-leds";
-        status = "okay";
+        status = "disabled";
 
 		lpwm {
 			label = "lpwm";
@@ -192,6 +192,7 @@
 &pwm {
     pinctrl-names = "default";
     pinctrl-0 = <&pwm0_pins_a>, <&pwm1_pins_a>;
+    pwm-number = <2>;
     status = "okay";
 };
 
@@ -293,11 +294,15 @@
     pwm0_pins_a: pwm0-pins {
         pins = "PB4";
         function = "pwm0";
+        drive-strength = <30>;
+		bias-pull-up;
     };
 
     pwm1_pins_a: pwm1-pins {
         pins = "PB5";
         function = "pwm1";
+        drive-strength = <30>;
+		bias-pull-up;
     };
 };
 
