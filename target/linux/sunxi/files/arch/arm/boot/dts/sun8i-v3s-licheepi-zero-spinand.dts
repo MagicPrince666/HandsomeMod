@@ -61,6 +61,16 @@
         stdout-path = "serial0:115200n8";
     };
 
+    soc {
+        pwm: pwm@1c21400 {
+            compatible = "allwinner,sun7i-a20-pwm";
+            reg = <0x01c21400 0xc>;
+            clocks = <&osc24M>;
+            #pwm-cells = <3>;
+            status = "disabled";
+        };
+    };
+
     leds {
         /* The LEDs use PG0~2 pins, which conflict with MMC1 */
         compatible = "gpio-leds";
@@ -192,7 +202,6 @@
 &pwm {
     pinctrl-names = "default";
     pinctrl-0 = <&pwm0_pins_a>, <&pwm1_pins_a>;
-    pwm-number = <2>;
     status = "okay";
 };
 
@@ -291,19 +300,19 @@
         function = "uart2";
     };
 
-    pwm0_pins_a: pwm0-pins {
-        pins = "PB4";
-        function = "pwm0";
-        drive-strength = <30>;
+    pwm0_pins_a: pwm0 {
+		pins = "PB4";
+		function = "pwm0";
+		drive-strength = <30>;
 		bias-pull-up;
-    };
+	};
 
-    pwm1_pins_a: pwm1-pins {
-        pins = "PB5";
-        function = "pwm1";
-        drive-strength = <30>;
+	pwm1_pins_a: pwm1 {
+		pins = "PB5";
+		function = "pwm1";
+		drive-strength = <30>;
 		bias-pull-up;
-    };
+	};
 };
 
 &spi0 {
