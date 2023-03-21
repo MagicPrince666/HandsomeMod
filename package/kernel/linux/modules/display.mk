@@ -245,6 +245,36 @@ endef
 
 $(eval $(call KernelPackage,fb-tft-ili9341))
 
+define KernelPackage/fb-tft-s6d02a1
+  SUBMENU:=$(DISPLAY_MENU)
+  TITLE:=FB driver for the samsung s6d02a1 LCD Controller
+  DEPENDS:=+kmod-fb-tft
+  KCONFIG:=CONFIG_FB_TFT_S6D02A1
+  FILES:=$(LINUX_DIR)/drivers/staging/fbtft/fb_s6d02a1.ko
+  AUTOLOAD:=$(call AutoLoad,09,fb_s6d02a1)
+endef
+
+define KernelPackage/fb-tft-s6d02a1/description
+  FB driver for the samsung s6d02a1 LCD Controller
+endef
+
+$(eval $(call KernelPackage,fb-tft-s6d02a1))
+
+define KernelPackage/fb-tft-s6d1121
+  SUBMENU:=$(DISPLAY_MENU)
+  TITLE:=FB driver for the samsung s6d1121 LCD Controller
+  DEPENDS:=+kmod-fb-tft
+  KCONFIG:=CONFIG_FB_TFT_S6D1121
+  FILES:=$(LINUX_DIR)/drivers/staging/fbtft/fb_s6d1121.ko
+  AUTOLOAD:=$(call AutoLoad,09,fb_s6d1121)
+endef
+
+define KernelPackage/fb-tft-s6d1121/description
+  FB driver for the samsung s6d1121 LCD Controller
+endef
+
+$(eval $(call KernelPackage,fb-tft-s6d1121))
+
 #
 #Drm  
 #
