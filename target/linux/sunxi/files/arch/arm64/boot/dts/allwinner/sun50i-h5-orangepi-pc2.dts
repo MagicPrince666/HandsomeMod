@@ -94,14 +94,14 @@
 		echo-gpios = <&pio 2 6 GPIO_ACTIVE_HIGH>; // PC6
 	};
 
-	// backlight: backlight {
-	//	compatible = "gpio-backlight";
-	//	pinctrl-names = "default";
-	//	pinctrl-0 = <&backlight_pins>;
+	backlight: backlight {
+		compatible = "gpio-backlight";
+		pinctrl-names = "default";
+		pinctrl-0 = <&backlight_pins>;
 
-	//	gpios = <&pio 6 9 GPIO_ACTIVE_HIGH>; /* PG 9 */
-	//	backlight-boot-off;
-	//};
+		gpios = <&pio 6 9 GPIO_ACTIVE_HIGH>; /* PG 9 */
+		backlight-boot-off;
+	};
 
 	rotary1: rotary-encoder {
 		compatible = "rotary-encoder";
@@ -326,8 +326,8 @@
 	cs-gpios = <&pio 0 13 GPIO_ACTIVE_HIGH>, <&pio 0 21 GPIO_ACTIVE_HIGH>;
 	status = "okay";
 
-	ili9341@0 {
-		compatible = "samsung,s6d02a1";
+	spi-lcd@0 {
+		compatible = "ilitek,ili9341";
 		reg = <0>;
 		status = "okay";
 		spi-max-frequency = <50000000>;
@@ -338,7 +338,7 @@
 		// reset-gpios = <&pio 6 8 GPIO_ACTIVE_LOW>; // PG8
 		dc-gpios = <&pio 0 7 GPIO_ACTIVE_HIGH>;	// PA7
 		debug = <0>;
-		// backlight = <&backlight>;
+		backlight = <&backlight>;
 	};
 
 	tsc2046@1 {
