@@ -74,7 +74,19 @@
     leds {
         /* The LEDs use PG0~2 pins, which conflict with MMC1 */
         compatible = "gpio-leds";
-        status = "disabled";
+        status = "okay";
+
+        dir {
+			label = "dir";
+			gpios = <&pio 6 1 GPIO_ACTIVE_HIGH>; // PG1
+			default-state = "off";
+		};
+
+		en {
+			label = "en";
+			gpios = <&pio 6 0 GPIO_ACTIVE_HIGH>; // PG0
+			default-state = "off";
+		};
 
 		lpwm {
 			label = "lpwm";
