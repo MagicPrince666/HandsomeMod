@@ -91,7 +91,7 @@ int main(int argc, char **argv)
     servo_pwm.polarity = true;
     servo_pwm.period = 20000000;
     servo_pwm.dutycycle = 1500000;
-    std::unique_ptr<Pwm> servo(new Pwm(moto_pwm));
+    std::unique_ptr<Pwm> servo(new Pwm(servo_pwm));
     servo->PwmDutyCycle(1500000);
 
     while(1) {
