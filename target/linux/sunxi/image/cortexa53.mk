@@ -101,7 +101,7 @@ define Device/xunlong_orangepi-pc2-spinand
 	KERNEL_NAME := Image
 
 	SUPPORTED_DEVICES := orangepi-pc2-spinand
-  	SUNXI_DTS := $$(SUNXI_DTS_DIR)$$(SOC)-orangepi-pc2
+  	SUNXI_DTS := $$(SUNXI_DTS_DIR)$$(SOC)-orangepi-pc2-spinand
 
 	KERNEL := kernel-bin | sunxi-kernelubifs
 	IMAGES := ubispinand.img.gz

@@ -11,7 +11,7 @@
 
 / {
 	model = "Xunlong Orange Pi PC 2";
-	compatible = "xunlong,orangepi-pc2", "allwinner,sun50i-h5";
+	compatible = "xunlong,orangepi-pc2-spinand", "allwinner,sun50i-h5";
 
 	reg_vcc3v3: vcc3v3 {
 		compatible = "regulator-fixed";
@@ -263,6 +263,14 @@
 		reg = <0>;
 		spi-max-frequency = <50000000>;
 		status = "okay";
+		boot@0 {
+			label = "boot";
+			reg = <0x0000000 0x0100000>;
+		};
+		ubi0@100000 {
+			label = "ubi0";
+			reg = <0x0100000 0x0000000>;
+		};
 	};
 };
 
