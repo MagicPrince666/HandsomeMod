@@ -1,0 +1,487 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+// Copyright (C) 2016 ARM Ltd.
+
+/dts-v1/;
+#include "sun50i-h5.dtsi"
+
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/input/input.h>
+#include <dt-bindings/pinctrl/sun4i-a10.h>
+#include <dt-bindings/pwm/pwm.h>
+
+/ {
+	model = "Xunlong Orange Pi PC 2 car driver";
+	compatible = "xunlong,orangepi-pc2-driver", "allwinner,sun50i-h5";
+
+	reg_vcc3v3: vcc3v3 {
+		compatible = "regulator-fixed";
+		regulator-name = "vcc3v3";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+	};
+
+	aliases {
+		ethernet0 = &emac;
+		serial0 = &uart0;
+		spi0 = &spi0;
+	};
+
+	chosen {
+		stdout-path = "serial0:115200n8";
+	};
+
+	soc {
+		pwm: pwm@1c21400 {
+			compatible = "allwinner,sun7i-a20-pwm";
+            reg = <0x01c21400 0xc>;
+			clocks = <&osc24M>;
+			#pwm-cells = <3>;
+			status = "disabled";
+		};
+	};
+
+	connector {
+		compatible = "hdmi-connector";
+		type = "a";
+
+		port {
+			hdmi_con_in: endpoint {
+				remote-endpoint = <&hdmi_out_con>;
+			};
+		};
+	};
+
+	leds {
+		compatible = "gpio-leds";
+
+		pwr {
+			label = "orangepi:green:pwr";
+			gpios = <&r_pio 0 10 GPIO_ACTIVE_HIGH>;
+			default-state = "on";
+			linux,default-trigger = "heartbeat";
+		};
+
+		status {
+			label = "orangepi:red:status";
+			gpios = <&pio 0 20 GPIO_ACTIVE_HIGH>;
+			linux,default-trigger = "timer";
+		};
+
+		moto1-ena {
+			label = "moto1-ena";
+			gpios = <&pio 2 7 GPIO_ACTIVE_HIGH>; // PC7
+			default-state = "on";
+		};
+
+		moto1-enb {
+			label = "moto1-enb";
+			gpios = <&pio 0 0 GPIO_ACTIVE_HIGH>; // PA0
+			default-state = "on";
+		};
+
+		moto2-ena {
+			label = "moto2-ena";
+			gpios = <&pio 0 1 GPIO_ACTIVE_HIGH>; // PA1
+			default-state = "on";
+		};
+
+		moto2-enb {
+			label = "moto2-enb";
+			gpios = <&pio 0 6 GPIO_ACTIVE_HIGH>; // PA6
+			default-state = "on";
+		};
+	};
+
+	r-gpio-keys {
+		compatible = "gpio-keys";
+
+		sw4 {
+			label = "sw4";
+			linux,code = <KEY_POWER>;
+			gpios = <&r_pio 0 3 GPIO_ACTIVE_LOW>;
+			wakeup-source;
+		};
+	};
+
+	pwm1-gpio {
+		compatible = "pwm-gpio";
+		#pwm-cells = <3>;
+
+		pwm-gpio = <&pio 3 14 GPIO_ACTIVE_HIGH>; // PD14
+	};
+
+	backlight: backlight {
+		compatible = "gpio-backlight";
+		pinctrl-names = "default";
+		pinctrl-0 = <&backlight_pins>;
+
+		gpios = <&pio 0 8 GPIO_ACTIVE_HIGH>; // PA8
+		backlight-boot-off;
+	};
+
+	rotary@0 {
+		compatible = "rotary-encoder";
+		gpios = <&pio 0 12 GPIO_ACTIVE_HIGH>, <&pio 0 11 GPIO_ACTIVE_HIGH>; //PA12 PA11
+		linux,axis = <0>; /* REL_X */
+		rotary-encoder,encoding = "gray";
+		rotary-encoder,relative-axis;
+		status = "okay";
+	};
+
+	rotary@1 {
+		compatible = "rotary-encoder";
+		gpios = <&pio 6 9 GPIO_ACTIVE_HIGH>, <&pio 6 6 GPIO_ACTIVE_HIGH>; //PG9 PG6
+		linux,axis = <1>; /* REL_X */
+		rotary-encoder,encoding = "gray";
+		rotary-encoder,relative-axis;
+		status = "okay";
+	};
+
+	reg_gmac_3v3: gmac-3v3 {
+		compatible = "regulator-fixed";
+		regulator-name = "gmac-3v3";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+		startup-delay-us = <100000>;
+		enable-active-high;
+		gpio = <&pio 3 6 GPIO_ACTIVE_HIGH>;
+	};
+
+	reg_usb0_vbus: usb0-vbus {
+		compatible = "regulator-fixed";
+		regulator-name = "usb0-vbus";
+		regulator-min-microvolt = <5000000>;
+		regulator-max-microvolt = <5000000>;
+		enable-active-high;
+		gpio = <&r_pio 0 2 GPIO_ACTIVE_HIGH>; /* PL2 */
+		status = "okay";
+	};
+
+	mcp251x_clk: can-osc {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <8000000>;
+	};
+
+	mcp251xfd_clk: canfd-osc {
+		compatible = "fixed-clock";
+		#clock-cells = <0>;
+		clock-frequency = <20000000>;
+	};
+};
+
+&codec {
+	allwinner,audio-routing =
+		"Line Out", "LINEOUT",
+		"MIC1", "Mic",
+		"Mic",  "MBIAS";
+	status = "okay";
+};
+
+&cpu0 {
+	cpu-supply = <&reg_vdd_cpux>;
+};
+
+&de {
+	status = "okay";
+};
+
+&ehci0 {
+	status = "okay";
+};
+
+&ehci1 {
+	status = "okay";
+};
+
+&ehci2 {
+	status = "okay";
+};
+
+&ehci3 {
+	status = "okay";
+};
+
+&emac {
+	pinctrl-names = "default";
+	pinctrl-0 = <&emac_rgmii_pins>;
+	phy-supply = <&reg_gmac_3v3>;
+	phy-handle = <&ext_rgmii_phy>;
+	phy-mode = "rgmii-id";
+	status = "okay";
+};
+
+&external_mdio {
+	ext_rgmii_phy: ethernet-phy@1 {
+		compatible = "ethernet-phy-ieee802.3-c22";
+		reg = <1>;
+	};
+};
+
+&hdmi {
+	status = "okay";
+};
+
+&hdmi_out {
+	hdmi_out_con: endpoint {
+		remote-endpoint = <&hdmi_con_in>;
+	};
+};
+
+&ir {
+	pinctrl-names = "default";
+	pinctrl-0 = <&r_ir_rx_pin>;
+	status = "okay";
+};
+
+&mmc0 {
+	vmmc-supply = <&reg_vcc3v3>;
+	bus-width = <4>;
+	cd-gpios = <&pio 5 6 GPIO_ACTIVE_LOW>; /* PF6 */
+	status = "okay";
+};
+
+&ohci0 {
+	status = "okay";
+};
+
+&ohci1 {
+	status = "okay";
+};
+
+&ohci2 {
+	status = "okay";
+};
+
+&ohci3 {
+	status = "okay";
+};
+
+&r_i2c {
+	status = "okay";
+
+	reg_vdd_cpux: regulator@65 {
+		compatible = "silergy,sy8106a";
+		reg = <0x65>;
+		regulator-name = "vdd-cpux";
+		silergy,fixed-microvolt = <1100000>;
+		regulator-min-microvolt = <1000000>;
+		regulator-max-microvolt = <1400000>;
+		regulator-ramp-delay = <200>;
+		regulator-boot-on;
+		regulator-always-on;
+	};
+};
+
+&spi0  {
+	status = "okay";
+
+	spi-nor@0 {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		compatible = "jedec,spi-nor";
+		reg = <0>;
+		spi-max-frequency = <40000000>;
+		status = "disabled";
+	};
+
+	spi-nand@0 {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		compatible = "spi-nand";
+		reg = <0>;
+		spi-max-frequency = <50000000>;
+		status = "okay";
+	};
+};
+
+&pio {
+	spi1_pins_cs1: spi1_pins_cs1 {
+		pins = "PA13", "PA21";
+		function = "gpio_out";
+	};
+
+	spi1_pins: spi1-pins {
+		pins = "PA15", "PA16", "PA14", "PA13";
+		function = "spi1";
+	};
+
+	i2c0_pa_pins: i2c0_pins {
+		pins = "PA11", "PA12";
+		function = "i2c0";
+	};
+
+	i2c1_pa_pins: i2c1_pins {
+		pins = "PA18", "PA19";
+		function = "i2c1";
+	};
+
+	pwm0_pin: pwm0@0 {
+		pins = "PA5";
+		function = "pwm0";
+	};
+
+	pwm1_pin: pwm1@0 {
+		pins = "PA6";
+		function = "pwm1";
+	};
+
+	moto1_speed_pin: speed@0 {
+		pins = "PA3";
+		function = "gpio_out";
+	};
+
+	moto2_speed_pin: speed@0 {
+		pins = "PC4";
+		function = "gpio_out";
+	};
+
+	backlight_pins: backlight-pins {
+		pins = "PA8";
+		function = "gpio_out";
+		drive-strength = <30>;
+	};
+
+	t_irq: t_irq-pins {
+		pins = "PA9";
+		function = "gpio_in";
+	};
+
+	can0_int: can0-int {
+		pins = "PG7";
+		function = "gpio_in";
+	};
+};
+
+&spi1 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	pinctrl-names = "default";
+	spi-num-chipselects = <3>;
+	pinctrl-0 = <&spi1_pins &spi1_pins_cs1>;
+	cs-gpios = <&pio 0 13 GPIO_ACTIVE_HIGH>, <&pio 0 21 GPIO_ACTIVE_HIGH>, <&pio 3 11 GPIO_ACTIVE_HIGH>;
+	status = "okay";
+
+	spi-lcd@0 {
+		compatible = "ilitek,ili9341";
+		reg = <1>;
+		status = "okay";
+		spi-max-frequency = <50000000>;
+		rotate = <270>;
+		bgr;
+		fps = <30>;
+		buswidth = <8>;
+		// reset-gpios = <&pio 6 8 GPIO_ACTIVE_LOW>; // PG8
+		dc-gpios = <&pio 0 7 GPIO_ACTIVE_HIGH>;	// PA7
+		debug = <0>;
+		backlight = <&backlight>;
+	};
+
+	tsc2046@1 {
+		reg = <0>;	/* CS0 */
+		compatible = "ti,tsc2046";
+		pinctrl-names = "default";
+		pinctrl-0 = <&t_irq>;
+		interrupt-parent = <&pio>;
+		interrupts = <0 9 IRQ_TYPE_EDGE_FALLING>;	//PA9
+		spi-max-frequency = <2000000>;
+		pendown-gpio = <&pio 0 9 GPIO_ACTIVE_HIGH>;
+		vcc-supply = <&reg_vcc3v3>;
+
+		ti,x-min = /bits/ 16 <0>;
+		ti,x-max = /bits/ 16 <320>;
+		ti,y-min = /bits/ 16 <0>;
+		ti,y-max = /bits/ 16 <240>;
+		ti,x-plate-ohms = /bits/ 16 <40>;
+		ti,pressure-max = /bits/ 16 <255>;
+
+		wakeup-source;
+		status = "okay";
+	};
+
+	mcp2515@0 {
+		compatible = "microchip,mcp2515";
+		spi-max-frequency = <5000000>;
+		reg = <3>;
+		clocks = <&mcp251x_clk>;
+		vdd-supply = <&reg_vcc3v3>;
+		xceiver-supply = <&reg_vcc3v3>;
+		interrupt-parent = <&pio>;
+		interrupts = <6 7 IRQ_TYPE_EDGE_FALLING>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&can0_int>;
+		status = "disabled";
+	};
+
+	mcp2518fd@0 {
+		compatible = "microchip,mcp2518fd";
+		spi-max-frequency = <20000000>;
+		reg = <3>;
+		clocks = <&mcp251xfd_clk>;
+		vdd-supply = <&reg_vcc3v3>;
+		xceiver-supply = <&reg_vcc3v3>;
+		interrupt-parent = <&pio>;
+		interrupts = <6 7 IRQ_TYPE_EDGE_FALLING>;
+		pinctrl-names = "default";
+		pinctrl-0 = <&can0_int>;
+		status = "okay";
+	};
+
+};
+
+&uart0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart0_pa_pins>;
+	status = "okay";
+};
+
+&uart1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart1_pins>;
+	status = "disabled";
+};
+
+&uart2 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&uart2_pins>;
+	status = "disabled";
+};
+
+&pwm {
+	pinctrl-names = "default";
+	pinctrl-0 = <&pwm0_pin>, <&pwm1_pin>;
+	status = "disabled";
+};
+
+&usb_otg {
+	dr_mode = "peripheral";
+	status = "okay";
+};
+
+&usbphy {
+	/* USB Type-A ports' VBUS is always on */
+	usb0_id_det-gpios = <&pio 6 12 GPIO_ACTIVE_HIGH>; /* PG12 */
+	usb0_vbus-supply = <&reg_usb0_vbus>;
+	status = "okay";
+};
+
+&i2c0 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c0_pa_pins>;
+	status = "disabled";
+};
+
+&i2c1 {
+	pinctrl-names = "default";
+	pinctrl-0 = <&i2c1_pa_pins>;
+	status = "okay";
+
+	mpu6050@68 {
+		compatible = "invensense,mpu6050";
+		reg = <0x68>;
+		status = "okay";
+		interrupt-parent = <&pio>;
+		interrupts = <0 10 IRQ_TYPE_EDGE_RISING>; // PA10
+		orientation = <0xff 0 0 0 1 0 0 0 0xff>;
+	};
+};

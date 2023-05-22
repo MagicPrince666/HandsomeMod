@@ -89,6 +89,18 @@ define Device/xunlong_orangepi-pc2
 endef
 TARGET_DEVICES += xunlong_orangepi-pc2
 
+define Device/xunlong_orangepi-pc2-driver
+  	DEVICE_VENDOR := Xunlong
+  	DEVICE_MODEL := Orange Pi PC 2 moto driver
+  	DEVICE_PACKAGES := usbutils usb-modeswitch v4l-utils openssh-sftp-server wpa-supplicant-mini \
+  		kmod-video-core kmod-video-uvc kmod-rtc-sunxi kmod-sunxi-ir kmod-pwm-gpio kmod-spi-dev \
+  		kmod-sound-core kmod-sun8i-codec kmod-usb-audio kmod-usb-storage-extras kmod-usb2 kmod-mt7601u \
+  		luci kmod-fs-ext4 kmod-fs-ntfs kmod-fs-vfat kmod-fuse
+  	$(Device/sun50i-h5)
+  	CONFIG_TARGET_ROOTFS_PARTSIZE := 7000
+endef
+TARGET_DEVICES += xunlong_orangepi-pc2-driver
+
 define Device/xunlong_orangepi-pc2-spinand
 	DEVICE_VENDOR := Xunlong
 	DEVICE_MODEL := Orange Pi PC 2 (SPINAND)
@@ -106,22 +118,18 @@ define Device/xunlong_orangepi-pc2-spinand
 	KERNEL := kernel-bin | sunxi-kernelubifs
 	IMAGES := ubispinand.img.gz
 	
-	MKUBIFS_OPTS := -F -m $(CONFIG_SUNXI_SPINAND_PAGESIZE) -e $(shell echo $$(($(CONFIG_SUNXI_SPINAND_BLOCKSIZE) - (($(CONFIG_SUNXI_SPINAND_PAGESIZE)/1024)*2))))KiB -c 880 -U
+	MKUBIFS_OPTS := -F -m 2048 -e $(shell echo $$((128 - ((2048/1024)*2))))KiB -c 880 -U
 	UBINIZE_OPTS := -vv
 
-	BLOCKSIZE := $(CONFIG_SUNXI_SPINAND_BLOCKSIZE)KiB
-	PAGESIZE := $(CONFIG_SUNXI_SPINAND_PAGESIZE)
-	SUBPAGESIZE := $(CONFIG_SUNXI_SPINAND_PAGESIZE)
-	VID_HDR_OFFSET := $(CONFIG_SUNXI_SPINAND_PAGESIZE)
-	IMAGE_SIZE := $(CONFIG_TARGET_ROOTFS_PARTSIZE)m
+	BLOCKSIZE := 128KiB
+	PAGESIZE := 2048
+	SUBPAGESIZE := 2048
+	VID_HDR_OFFSET := 2048
+	IMAGE_SIZE := 104m
 	KERNEL_IN_UBI := 1
 	UBOOTENV_IN_UBI := 1
 
-	IMAGE/ubispinand.img.gz := \
-		sunxi-spinandboot | \
-		pad-to $$(CONFIG_SUN8I_V3S_OFFSET_UBI) | \
-		append-ubi | \
-		gzip
+	IMAGE/ubispinand.img.gz := sunxi-spinandboot | pad-to 1048576 | append-ubi | gzip
 endef
 TARGET_DEVICES += xunlong_orangepi-pc2-spinand
 

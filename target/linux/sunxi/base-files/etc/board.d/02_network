@@ -21,7 +21,11 @@ olimex,a20-olinuxino-micro)
 xunlong,orangepi-r1)
 	ucidef_set_interfaces_lan_wan "eth0" "eth1"
 	;;
-xunlong,orangepi-pc2)
+xunlong,orangepi-pc2|\
+xunlong,orangepi-pc2-driver)
+    ucidef_set_interface_wan "eth0"
+    ;;
+xunlong,orangepi-pc2-spinand)
     ucidef_set_interface_wan "eth0"
     ;;
 cputools,cbox)
