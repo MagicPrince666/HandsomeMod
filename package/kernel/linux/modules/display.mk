@@ -245,6 +245,21 @@ endef
 
 $(eval $(call KernelPackage,fb-tft-ili9341))
 
+define KernelPackage/fb-tft-hx8347d
+  SUBMENU:=$(DISPLAY_MENU)
+  TITLE:=FB driver for the HX8347D LCD Controller
+  DEPENDS:=+kmod-fb-tft
+  KCONFIG:=CONFIG_FB_TFT_HX8347D
+  FILES:=$(LINUX_DIR)/drivers/staging/fbtft/fb_hx8347d.ko
+  AUTOLOAD:=$(call AutoLoad,09,fb_hx8347d)
+endef
+
+define KernelPackage/fb-tft-hx8347d/description
+  FB driver for the HX8347D LCD Controller
+endef
+
+$(eval $(call KernelPackage,fb-tft-hx8347d))
+
 define KernelPackage/fb-tft-s6d02a1
   SUBMENU:=$(DISPLAY_MENU)
   TITLE:=FB driver for the samsung s6d02a1 LCD Controller

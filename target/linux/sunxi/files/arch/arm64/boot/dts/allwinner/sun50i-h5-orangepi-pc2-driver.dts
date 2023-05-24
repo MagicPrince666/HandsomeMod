@@ -116,7 +116,7 @@
 		pinctrl-0 = <&backlight_pins>;
 
 		gpios = <&pio 0 8 GPIO_ACTIVE_HIGH>; // PA8
-		backlight-boot-off;
+		backlight-boot-on;
 	};
 
 	rotary@0 {
@@ -297,7 +297,7 @@
 
 &pio {
 	spi1_pins_cs1: spi1_pins_cs1 {
-		pins = "PA13", "PA21";
+		pins = "PA13", "PA21", "PD11";
 		function = "gpio_out";
 	};
 
@@ -362,8 +362,9 @@
 	cs-gpios = <&pio 0 13 GPIO_ACTIVE_HIGH>, <&pio 0 21 GPIO_ACTIVE_HIGH>, <&pio 3 11 GPIO_ACTIVE_HIGH>;
 	status = "okay";
 
-	spi-lcd@0 {
-		compatible = "ilitek,ili9341";
+	spi-lcd@1 {
+		compatible = "himax,hx8347d";
+		// compatible = "ilitek,ili9341";
 		reg = <1>;
 		status = "okay";
 		spi-max-frequency = <50000000>;
@@ -377,7 +378,7 @@
 		backlight = <&backlight>;
 	};
 
-	tsc2046@1 {
+	tsc2046@0 {
 		reg = <0>;	/* CS0 */
 		compatible = "ti,tsc2046";
 		pinctrl-names = "default";
