@@ -148,6 +148,8 @@
 };
 
 &mmc0 {
+    pinctrl-names = "default";
+    pinctrl-0 = <&mmc0_pf_pins>;
     broken-cd;
     bus-width = <4>;
     vmmc-supply = <&reg_vcc3v3>;
@@ -281,6 +283,14 @@
 };
 
 &pio {
+    mmc0_pf_pins: mmc0-pins {
+        pins = "PF0", "PF1", "PF2", "PF3",
+                "PF4", "PF5";
+        function = "mmc0";
+        drive-strength = <30>;
+        bias-pull-up;
+    };
+
     spi0_pins_a: spi0-pins {
         pins = "PC0", "PC1", "PC2", "PC3";
         function = "spi0";
