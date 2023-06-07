@@ -20,7 +20,6 @@ INCLUDE += -I$(DIR_COMPONENTS)/include
 INCLUDE += -I$(DIR_LINUX_PORT)/include
 INCLUDE += -I.
 
-
 SRC += $(DIR_COMMON)/protobuf-c/protobuf-c/protobuf-c.c
 SRC += $(DIR_COMMON)/esp_hosted_config.pb-c.c
 SRC += $(DIR_CTRL_LIB)/src/ctrl_core.c

@@ -22,33 +22,10 @@ MODULE_NAME="esp32_${IF_TYPE}.ko"
 
 wlan_init()
 {
-    if [ `lsmod | grep esp32 | wc -l` != "0" ]; then
-        sudo rm /dev/esps0
-        if [ `lsmod | grep esp32_sdio | wc -l` != "0" ]; then
-            sudo rmmod esp32_sdio &> /dev/null
-            else
-            sudo rmmod esp32_spi &> /dev/null
-        fi
+    if [ `lsmod | grep esp32 | wc -l` == "0" ]; then
+       insmod $MODULE_NAME
     fi
 
-    if [ "$TEST_RAW_TP" = "0" ] ; then
-        VAL_CONFIG_TEST_RAW_TP=n
-    else
-        VAL_CONFIG_TEST_RAW_TP=y
-    fi
-
-    # For Linux other than Raspberry Pi, Please point
-    # CROSS_COMPILE -> <Toolchain-Path>/bin/arm-linux-gnueabihf-
-    # KERNEL        -> Place where kernel is checked out and built
-    # ARCH          -> Architecture
-
-    if [ "$RESETPIN" = "" ] ; then
-        #By Default, BCM6 is GPIO on host. use resetpin=6
-        # sudo insmod $MODULE_NAME resetpin=6
-    else
-        #Use resetpin value from argument
-        insmod $MODULE_NAME
-    fi
     if [ `lsmod | grep esp32 | wc -l` != "0" ]; then
         echo "esp32 module inserted "
         mknod /dev/esps0 c 221 0
