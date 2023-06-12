@@ -34,7 +34,7 @@ CMAKE_OPTIONS +=
 define Package/$(PKG_NAME)/install
 	$(INSTALL_DIR) $(1)/usr/sbin $(1)/etc/init.d $(1)/etc
 	$(CP) $(PKG_BUILD_DIR)/SmartCar $(1)/usr/sbin/
-	$(CP) $(PKG_BUILD_DIR)/smart_car $(1)/etc/init.d/
+	$(CP) $(PKG_BUILD_DIR)/src/smart_car $(1)/etc/init.d/
 	$(CP) $(PKG_BUILD_DIR)/docs/licheepizero_conf.json $(1)/etc/car_conf.json
 endef
 

@@ -68,6 +68,30 @@
 			gpios = <&pio 0 20 GPIO_ACTIVE_HIGH>;
 			linux,default-trigger = "timer";
 		};
+
+		moto1-ena {
+			label = "moto1-ena";
+			gpios = <&pio 0 6 GPIO_ACTIVE_HIGH>; // PA6
+			default-state = "on";
+		};
+
+		moto1-enb {
+			label = "moto1-enb";
+			gpios = <&pio 0 1 GPIO_ACTIVE_HIGH>; // PA1
+			default-state = "on";
+		};
+
+		moto2-ena {
+			label = "moto2-ena";
+			gpios = <&pio 0 11 GPIO_ACTIVE_HIGH>; // PA11
+			default-state = "on";
+		};
+
+		moto2-enb {
+			label = "moto2-enb";
+			gpios = <&pio 0 12 GPIO_ACTIVE_HIGH>; // PA12
+			default-state = "on";
+		};
 	};
 
 	r-gpio-keys {
@@ -81,11 +105,25 @@
 		};
 	};
 
-	pwm1-gpio {
+	pwm1-gpio@0 {
 		compatible = "pwm-gpio";
+		reg = <0>;
 		#pwm-cells = <3>;
-
 		pwm-gpio = <&pio 3 14 GPIO_ACTIVE_HIGH>; // PD14
+	};
+
+	pwm1-gpio@1 {
+		compatible = "pwm-gpio";
+		reg = <1>;
+		#pwm-cells = <3>;
+		pwm-gpio = <&pio 0 3 GPIO_ACTIVE_HIGH>; // PA3
+	};
+
+	pwm1-gpio@3 {
+		compatible = "pwm-gpio";
+		reg = <2>;
+		#pwm-cells = <3>;
+		pwm-gpio = <&pio 2 4 GPIO_ACTIVE_HIGH>; // PC4
 	};
 
 	srf04@0 {
@@ -292,11 +330,6 @@
 		function = "pwm0";
 	};
 
-	pwm1_pin: pwm1@0 {
-		pins = "PA6";
-		function = "pwm1";
-	};
-
 	backlight_pins: backlight-pins {
 		pins = "PG9";
 		function = "gpio_out";
@@ -405,7 +438,7 @@
 
 &pwm {
 	pinctrl-names = "default";
-	pinctrl-0 = <&pwm0_pin>, <&pwm1_pin>;
+	pinctrl-0 = <&pwm0_pin>;
 	status = "disabled";
 };
 
