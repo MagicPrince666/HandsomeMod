@@ -12,7 +12,7 @@ define Package/$(PKG_NAME)
 	SECTION:=base
 	CATEGORY:=Utilities
 	TITLE:=esp32 sdio wifi bluetooth controler
-	SUBMENU:=prine
+	SUBMENU:=Prince
 	DEPENDS:= +libpthread
 endef
 

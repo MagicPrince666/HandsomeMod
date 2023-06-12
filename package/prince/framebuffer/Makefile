@@ -13,7 +13,7 @@ define Package/$(PKG_NAME)
 	SECTION:=base
 	CATEGORY:=Utilities
 	TITLE:=key event firmware
-	SUBMENU:=prine
+	SUBMENU:=Prince
 	DEPENDS:= +libpthread +libstdcpp
 endef
 

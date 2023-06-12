@@ -13,7 +13,7 @@ define Package/$(PKG_NAME)
 	SECTION:=base
 	CATEGORY:=Utilities
 	TITLE:=play mp4 with framebuffer
-	SUBMENU:=prine
+	SUBMENU:=Prince
 	DEPENDS:= +libpthread +libstdcpp +ffmpeg
 endef
 

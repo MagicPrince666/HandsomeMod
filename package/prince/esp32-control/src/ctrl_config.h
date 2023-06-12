@@ -54,8 +54,8 @@
 
 /* station mode */
 #define STATION_MODE_MAC_ADDRESS            "aa:bb:cc:dd:ee:ff"
-#define STATION_MODE_SSID                   "MyWifi"
-#define STATION_MODE_PWD                    "MyWifiPass@123"
+#define STATION_MODE_SSID                   "OpenWrt_TX1801_PLUS_2.4G"
+#define STATION_MODE_PWD                    "67123236"
 #define STATION_MODE_BSSID                  ""
 #define STATION_MODE_IS_WPA3_SUPPORTED      false
 #define STATION_MODE_LISTEN_INTERVAL        5
