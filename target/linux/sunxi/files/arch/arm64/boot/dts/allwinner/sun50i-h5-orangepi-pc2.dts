@@ -71,25 +71,25 @@
 
 		moto1-ena {
 			label = "moto1-ena";
-			gpios = <&pio 0 6 GPIO_ACTIVE_HIGH>; // PA6
+			gpios = <&pio 2 7 GPIO_ACTIVE_HIGH>; // PC7
 			default-state = "on";
 		};
 
 		moto1-enb {
 			label = "moto1-enb";
-			gpios = <&pio 0 1 GPIO_ACTIVE_HIGH>; // PA1
+			gpios = <&pio 6 9 GPIO_ACTIVE_HIGH>; // PG9
 			default-state = "on";
 		};
 
 		moto2-ena {
 			label = "moto2-ena";
-			gpios = <&pio 0 11 GPIO_ACTIVE_HIGH>; // PA11
+			gpios = <&pio 3 14 GPIO_ACTIVE_HIGH>; // PD14
 			default-state = "on";
 		};
 
 		moto2-enb {
 			label = "moto2-enb";
-			gpios = <&pio 0 12 GPIO_ACTIVE_HIGH>; // PA12
+			gpios = <&pio 0 6 GPIO_ACTIVE_HIGH>; // PA6
 			default-state = "on";
 		};
 	};
@@ -109,7 +109,7 @@
 		compatible = "pwm-gpio";
 		reg = <0>;
 		#pwm-cells = <3>;
-		pwm-gpio = <&pio 3 14 GPIO_ACTIVE_HIGH>; // PD14
+		pwm-gpio = <&pio 0 7 GPIO_ACTIVE_HIGH>; // PA7
 	};
 
 	pwm1-gpio@1 {
@@ -137,13 +137,13 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&backlight_pins>;
 
-		gpios = <&pio 6 9 GPIO_ACTIVE_HIGH>; /* PG 9 */
+		gpios = <&pio 0 8 GPIO_ACTIVE_HIGH>; // PA8
 		backlight-boot-off;
 	};
 
 	rotary1: rotary-encoder {
 		compatible = "rotary-encoder";
-		gpios = <&pio 2 7 GPIO_ACTIVE_HIGH>, <&pio 6 9 GPIO_ACTIVE_HIGH>; //PC7 PG9
+		gpios = <&pio 0 11 GPIO_ACTIVE_HIGH>, <&pio 0 12 GPIO_ACTIVE_HIGH>; //PA11 PA12
 		linux,axis = <0>; /* REL_X */
 		rotary-encoder,encoding = "gray";
 		rotary-encoder,relative-axis;
@@ -331,7 +331,7 @@
 	};
 
 	backlight_pins: backlight-pins {
-		pins = "PG9";
+		pins = "PA8";
 		function = "gpio_out";
 		drive-strength = <30>;
 	};
@@ -361,7 +361,7 @@
 		fps = <30>;
 		buswidth = <8>;
 		// reset-gpios = <&pio 6 8 GPIO_ACTIVE_LOW>; // PG8
-		dc-gpios = <&pio 0 7 GPIO_ACTIVE_HIGH>;	// PA7
+		dc-gpios = <&pio 3 11 GPIO_ACTIVE_HIGH>;	// PD11
 		debug = <0>;
 		backlight = <&backlight>;
 	};
@@ -470,7 +470,7 @@
 		reg = <0x68>;
 		status = "okay";
 		interrupt-parent = <&pio>;
-		interrupts = <3 10 IRQ_TYPE_EDGE_RISING>; // PD10
+		interrupts = <0 10 IRQ_TYPE_EDGE_RISING>; // PA10
 		i2c-gate {
 			#address-cells = <1>;
 			#size-cells = <0>;
