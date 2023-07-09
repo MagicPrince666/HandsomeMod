@@ -61,6 +61,167 @@
 		/delete-node/ framebuffer@0;
 	};
 
+	cpu0_opp_table: opp_table0 {
+		compatible = "operating-points-v2";
+		opp-shared;
+
+		opp-648000000 {
+			opp-hz = /bits/ 64 <648000000>;
+			opp-microvolt = <1040000 1040000 1300000>;
+			clock-latency-ns = <244144>; /* 8 32k periods */
+		};
+
+		opp-816000000 {
+			opp-hz = /bits/ 64 <816000000>;
+			opp-microvolt = <1100000 1100000 1300000>;
+			clock-latency-ns = <244144>; /* 8 32k periods */
+		};
+
+		opp-1008000000 {
+			opp-hz = /bits/ 64 <1008000000>;
+			opp-microvolt = <1200000 1200000 1300000>;
+			clock-latency-ns = <244144>; /* 8 32k periods */
+		};
+	};
+
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		cpu0: cpu@0 {
+			compatible = "arm,cortex-a7";
+			device_type = "cpu";
+			reg = <0>;
+			clocks = <&ccu CLK_CPUX>;
+			clock-names = "cpu";
+			operating-points-v2 = <&cpu0_opp_table>;
+			#cooling-cells = <2>;
+		};
+
+		cpu1: cpu@1 {
+			compatible = "arm,cortex-a7";
+			device_type = "cpu";
+			reg = <1>;
+			clocks = <&ccu CLK_CPUX>;
+			clock-names = "cpu";
+			operating-points-v2 = <&cpu0_opp_table>;
+			#cooling-cells = <2>;
+		};
+
+		cpu2: cpu@2 {
+			compatible = "arm,cortex-a7";
+			device_type = "cpu";
+			reg = <2>;
+			clocks = <&ccu CLK_CPUX>;
+			clock-names = "cpu";
+			operating-points-v2 = <&cpu0_opp_table>;
+			#cooling-cells = <2>;
+		};
+
+		cpu3: cpu@3 {
+			compatible = "arm,cortex-a7";
+			device_type = "cpu";
+			reg = <3>;
+			clocks = <&ccu CLK_CPUX>;
+			clock-names = "cpu";
+			operating-points-v2 = <&cpu0_opp_table>;
+			#cooling-cells = <2>;
+		};
+	};
+
+	soc {
+		codec: codec@1c22c00 {
+			#sound-dai-cells = <0>;
+			compatible = "allwinner,sun8i-h3-codec";
+			reg = <0x01c22c00 0x400>;
+			interrupts = <GIC_SPI 29 IRQ_TYPE_LEVEL_HIGH>;
+			clocks = <&ccu CLK_BUS_CODEC>, <&ccu CLK_AC_DIG>;
+			clock-names = "apb", "codec";
+			resets = <&ccu RST_BUS_CODEC>;
+			dmas = <&dma 15>, <&dma 15>;
+			dma-names = "rx", "tx";
+			allwinner,codec-analog-controls = <&codec_analog>;
+			status = "disabled";
+		};
+
+		codec_analog: codec-analog@1f015c0 {
+			compatible = "allwinner,sun8i-h3-codec-analog";
+			reg = <0x01f015c0 0x4>;
+		};
+
+		syscon: system-control@1c00000 {
+			compatible = "allwinner,sun8i-h3-system-control";
+			reg = <0x01c00000 0x1000>;
+			#address-cells = <1>;
+			#size-cells = <1>;
+			ranges;
+
+			sram_c: sram@1d00000 {
+				compatible = "mmio-sram";
+				reg = <0x01d00000 0x80000>;
+				#address-cells = <1>;
+				#size-cells = <1>;
+				ranges = <0 0x01d00000 0x80000>;
+
+				ve_sram: sram-section@0 {
+					compatible = "allwinner,sun8i-h3-sram-c1",
+						     "allwinner,sun4i-a10-sram-c1";
+					reg = <0x000000 0x80000>;
+				};
+			};
+		};
+
+		video-codec@1c0e000 {
+			compatible = "allwinner,sun8i-h3-video-engine","allwinner,sun8i-h3-cedar";
+			reg = <0x01c0e000 0x1000>;
+			clocks = <&ccu CLK_BUS_VE>, <&ccu CLK_VE>,
+				 <&ccu CLK_DRAM_VE>;
+			clock-names = "ahb", "mod", "ram";
+			resets = <&ccu RST_BUS_VE>;
+			interrupts = <GIC_SPI 58 IRQ_TYPE_LEVEL_HIGH>;
+			allwinner,sram = <&ve_sram 1>;
+
+		};
+		
+		ion: ion {
+		    compatible = "allwinner,sunxi-ion";
+        	status = "disabled";
+        	heap_cma@0{
+          		compatible = "allwinner,cma";
+          		heap-name  = "cma";
+          		heap-id    = <0x4>;
+          		heap-base  = <0x0>;
+          		heap-size  = <0x0>;
+          		heap-type  = "ion_cma";
+         	};
+       	};
+
+		mali: gpu@1c40000 {
+			compatible = "allwinner,sun8i-h3-mali", "arm,mali-400";
+			reg = <0x01c40000 0x10000>;
+			interrupts = <GIC_SPI 97 IRQ_TYPE_LEVEL_HIGH>,
+				     <GIC_SPI 98 IRQ_TYPE_LEVEL_HIGH>,
+				     <GIC_SPI 99 IRQ_TYPE_LEVEL_HIGH>,
+				     <GIC_SPI 100 IRQ_TYPE_LEVEL_HIGH>,
+				     <GIC_SPI 102 IRQ_TYPE_LEVEL_HIGH>,
+				     <GIC_SPI 103 IRQ_TYPE_LEVEL_HIGH>,
+				     <GIC_SPI 101 IRQ_TYPE_LEVEL_HIGH>;
+			interrupt-names = "gp",
+					  "gpmmu",
+					  "pp0",
+					  "ppmmu0",
+					  "pp1",
+					  "ppmmu1",
+					  "pmu";
+			clocks = <&ccu CLK_BUS_GPU>, <&ccu CLK_GPU>;
+			clock-names = "bus", "core";
+			resets = <&ccu RST_BUS_GPU>;
+
+			assigned-clocks = <&ccu CLK_GPU>;
+			assigned-clock-rates = <384000000>;
+		};
+	};
+
 	leds {
 		compatible = "gpio-leds";
 
@@ -78,11 +239,32 @@
 		};
 	};
 
-	srf04@0 {
-		compatible = "devantech,srf04";
-		trig-gpios = <&pio 0 2 GPIO_ACTIVE_HIGH>; // PA2
-		echo-gpios = <&r_pio 0 11 GPIO_ACTIVE_HIGH>; // PL11
-		status = "okay";
+	gpio-keys {
+		compatible = "gpio-keys";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		autorepeat;
+
+		switch@0 {
+			label = "left";
+			linux,code = <103>;
+			interrupt-parent = <&pio>;
+			interrupts = <0 2 IRQ_TYPE_EDGE_BOTH>; // PA2
+		};
+
+		switch@1 {
+			label = "mode";
+			linux,code = <104>;
+			interrupt-parent = <&pio>;
+			interrupts = <6 11 IRQ_TYPE_EDGE_BOTH>; // PG11
+		};
+
+		switch@2 {
+			label = "right";
+			linux,code = <105>;
+			interrupt-parent = <&pio>;
+			interrupts = <0 4 IRQ_TYPE_EDGE_BOTH>;// PA4
+		};
 	};
 
 	backlight: backlight {
@@ -90,30 +272,37 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&backlight_pins>;
 
-		brightness-levels = <0 20 40 60 80 100>;
-		default-brightness-level = <0>;
+		gpios = <&pio 0 6 GPIO_ACTIVE_HIGH>; // PA6
+		backlight-boot-on;
+	};
 
-		gpios = <&pio 6 9 GPIO_ACTIVE_HIGH>; // PG9
-		default-on;
-		status = "okay";
+	pwm-gpio@0 {
+		compatible = "pwm-gpio";
+		reg = <0>;
+		#pwm-cells = <3>;
+		pwm-gpio = <&r_pio 0 11 GPIO_ACTIVE_HIGH>; // PL11
 	};
 };
 
 &uart0 {
 	pinctrl-names = "default";
-	pinctrl-0 = <&uart0_pins_pa>;
-	status = "disabled";
+	pinctrl-0 = <&uart0_pa_pins>;
+	status = "okay";
 };
 
 &pwm {
 	pinctrl-names = "default";
 	pinctrl-0 = <&pwm0_pins_pa>;
-	status = "okay";
+	status = "disabled";
 };
 
 &uart1 {
 	pinctrl-names = "default";
 	pinctrl-0 = <&uart1_pins_pa>;
+	status = "okay";
+};
+
+&de {
 	status = "okay";
 };
 
@@ -138,13 +327,17 @@
 	status = "okay";
 };
 
+&ehci3 {
+	status = "okay";
+};
+
 &spi0 {
 	#address-cells = <1>;
 	#size-cells = <0>;
     pinctrl-names = "default";
     pinctrl-0 = <&spi0_pins &spi0_pins_cs1>;
 	spi-num-chipselects = <2>;
-	cs-gpios = <&pio 2 3 GPIO_ACTIVE_HIGH>, <&pio 0 3 GPIO_ACTIVE_HIGH>;
+	cs-gpios = <&pio 2 3 GPIO_ACTIVE_HIGH>, <&pio 6 9 GPIO_ACTIVE_HIGH>; // PC3 PG9
     status = "okay";
 
 	ili9341@0 {
@@ -156,8 +349,7 @@
 		bgr;
 		fps = <30>;
 		buswidth = <8>;
-		reset-gpios = <&pio 6 8 GPIO_ACTIVE_LOW>; //PG8
-		dc-gpios = <&pio 0 1 GPIO_ACTIVE_HIGH>;//PA1
+		dc-gpios = <&pio 6 8 GPIO_ACTIVE_HIGH>;// PG8
 		debug = <0>;
 		backlight = <&backlight>;
 	};
@@ -168,9 +360,9 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&t_irq>;
 		interrupt-parent = <&pio>;
-		interrupts = <0 6 IRQ_TYPE_EDGE_FALLING>;	//PA6
+		interrupts = <0 3 IRQ_TYPE_EDGE_FALLING>;	//PA3
 		spi-max-frequency = <2000000>;
-		pendown-gpio = <&pio 0 6 GPIO_ACTIVE_HIGH>;
+		pendown-gpio = <&pio 0 3 GPIO_ACTIVE_HIGH>;
 		vcc-supply = <&reg_vcc3v3>;
 
 		ti,x-min = /bits/ 16 <0>;
@@ -205,13 +397,18 @@
 	status = "okay";
 };
 
+&ohci3 {
+	status = "okay";
+};
+
 &usb_otg {
 	status = "okay";
-	dr_mode = "peripheral";
+	dr_mode = "otg";
 };
 
 &usbphy {
 	usb0_id_det-gpios = <&pio 6 12 GPIO_ACTIVE_HIGH>; /* PG12 */
+	status = "okay";
 };
 
 &rtc {
@@ -243,7 +440,7 @@
    	};
 
 	spi0_pins_cs1: spi0_pins_cs1 {
-		pins = "PC3", "PA3";
+		pins = "PC3", "PG9";
 		function = "gpio_out";
 	};
 
@@ -254,7 +451,7 @@
 	};
 
 	backlight_pins: backlight-pins {
-		pins = "PG9";
+		pins = "PA6";
 		function = "gpio_out";
 		drive-strength = <30>;
 	};
@@ -266,7 +463,7 @@
 	};
 
 	t_irq: t_irq-pins {
-		pins = "PA6";
+		pins = "PA3";
 		function = "gpio_in";
 	};
 };
@@ -301,14 +498,24 @@
 		reg = <0x68>;
 		status = "disabled";
 		interrupt-parent = <&pio>;
-		interrupts = <0 0 IRQ_TYPE_EDGE_RISING>; //PA0
-		orientation = <0xff 0 0 0 1 0 0 0 0xff>;
+		interrupts = <0 17 IRQ_TYPE_EDGE_RISING>; // PA17
+		mount-matrix = "-0.984807753012208",  /* x0 */
+		               "0",                   /* y0 */
+		               "-0.173648177666930",  /* z0 */
+		               "0",                   /* x1 */
+		               "-1",                  /* y1 */
+		               "0",                   /* z1 */
+		               "-0.173648177666930",  /* x2 */
+		               "0",                   /* y2 */
+		               "0.984807753012208";   /* z2 */
 	};
 
 	mpu9250: imu@68 {
 		compatible = "invensense,mpu9250";
 		reg = <0x68>;
 		status = "disabled";
+		interrupt-parent = <&pio>;
+		interrupts = <0 17 IRQ_TYPE_EDGE_RISING>;
 		i2c-gate {
 			#address-cells = <1>;
 			#size-cells = <0>;
@@ -317,19 +524,16 @@
 				reg = <0x0c>;
 			};
 		};
+		/*invensense,int_config = <0x10>;
+		invensense,level_shifter = <0>;
+		invensense,orientation = [01 00 00 00 01 00 00 00 01];
+		invensense,sec_slave_type = <0>;
+		invensense,key = [4e cc 7e eb f6 1e 35 22 00 34 0d 65 32 e9 94 89];*/
 	};
 
 	bmp280: pressure@76 {
 		compatible = "bosch,bmp280";
 		reg = <0x76>;
-		status = "okay";
-	};
-
-	vl53l0x@29 {
-		compatible = "st,vl53l0x";
-		reg = <0x29>;
-		interrupt-parent = <&pio>;
-		interrupts = <6 11 IRQ_TYPE_EDGE_FALLING>; //PG11
-		status = "okay";
+		status = "disabled";
 	};
 };
