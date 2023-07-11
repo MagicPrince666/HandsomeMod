@@ -305,6 +305,16 @@
 };
 
 &pio {
+	uart1_pins_pg: uart1-pins {
+		pins = "PG6", "PG7";
+		function = "uart1";
+	};
+
+	uart2_pins_pa: uart2-pins {
+		pins = "PA0", "PA1";
+		function = "uart2";
+	};
+
 	spi1_pins_cs1: spi1_pins_cs1 {
 		pins = "PA13", "PA21";
 		function = "gpio_out";
@@ -426,13 +436,13 @@
 
 &uart1 {
 	pinctrl-names = "default";
-	pinctrl-0 = <&uart1_pins>;
-	status = "okay";
+	pinctrl-0 = <&uart1_pins_pg>;
+	status = "disabled";
 };
 
 &uart2 {
 	pinctrl-names = "default";
-	pinctrl-0 = <&uart2_pins>;
+	pinctrl-0 = <&uart2_pins_pa>;
 	status = "okay";
 };
 
