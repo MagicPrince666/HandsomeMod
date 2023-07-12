@@ -23,8 +23,8 @@
 	aliases {
 		ethernet0 = &emac;
 		serial0 = &uart0;
-		serial1 = &uart1;
-		// serial2 = &uart2;
+		// serial1 = &uart1;
+		serial2 = &uart2;
 		spi0 = &spi0;
 	};
 
