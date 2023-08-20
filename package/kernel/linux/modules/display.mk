@@ -347,6 +347,72 @@ endef
 
 $(eval $(call KernelPackage,drm-kms-helper))
 
+define KernelPackage/drm-dma-helper
+  SUBMENU:=$(VIDEO_MENU)
+  TITLE:=CRTC helpers for DMA drivers
+  DEPENDS:=@DISPLAY_SUPPORT +kmod-drm +kmod-drm-kms-helper
+  KCONFIG:= \
+    CONFIG_DRM_GEM_DMA_HELPER
+  FILES:=$(LINUX_DIR)/drivers/gpu/drm/drm_dma_helper.ko
+  AUTOLOAD:=$(call AutoProbe,drm_dma_helper)
+endef
+
+define KernelPackage/drm-dma-helper/description
+  CRTC helpers for DMA drivers.
+endef
+
+$(eval $(call KernelPackage,drm-dma-helper))
+
+define KernelPackage/drm-mipi-dbi
+  SUBMENU:=$(VIDEO_MENU)
+  TITLE:=CRTC DRM MIPI dbi drivers
+  DEPENDS:=@DISPLAY_SUPPORT +kmod-drm +kmod-drm-kms-helper
+  KCONFIG:= \
+    CONFIG_DRM_MIPI_DBI
+  FILES:=$(LINUX_DIR)/drivers/gpu/drm/drm_mipi_dbi.ko
+  AUTOLOAD:=$(call AutoProbe,drm_mipi_dbi)
+endef
+
+define KernelPackage/drm-mipi-dbi/description
+  CRTC DRM MIPI dbi drivers.
+endef
+
+$(eval $(call KernelPackage,drm-mipi-dbi))
+
+define KernelPackage/drm-ili9341
+	SUBMENU:=$(VIDEO_MENU)
+	TITLE:=DRM driver for the ILI9341 LCD Controller
+	DEPENDS:=+kmod-fb-tft +kmod-drm +kmod-drm-kms-helper +kmod-drm-dma-helper +kmod-drm-mipi-dbi
+	KCONFIG:=CONFIG_TINYDRM_ILI9341
+	FILES:=$(LINUX_DIR)/drivers/gpu/drm/tiny/ili9341.ko
+	AUTOLOAD:=$(call AutoLoad,09,ili9341)
+endef
+
+define KernelPackage/drm-ili9341/description
+	DRM driver for the ILI9341 LCD Controller
+endef
+
+$(eval $(call KernelPackage,drm-ili9341))
+
+define KernelPackage/sitronix-st7701
+	SUBMENU:=$(VIDEO_MENU)
+	TITLE:=Sitronix ST7701 panel driver
+	DEPENDS:=+kmod-drm +kmod-drm-mipi-dbi +kmod-backlight
+	KCONFIG:= \
+		  CONFIG_DRM_PANEL=y \
+      CONFIG_DRM_PANEL_SAMSUNG_LD9040=n \
+      CONFIG_DRM_PANEL_SAMSUNG_S6E8AA0 \
+		  CONFIG_DRM_PANEL_SITRONIX_ST7701
+	FILES:=$(LINUX_DIR)/drivers/gpu/drm/panel/panel-sitronix-st7701.ko
+	AUTOLOAD:=$(call AutoLoad,09,panel-sitronix-st7701)
+endef
+
+define KernelPackage/sitronix-st7701/description
+	Sitronix ST7701 panel driver
+endef
+
+$(eval $(call KernelPackage,sitronix-st7701))
+
 define KernelPackage/drm-amdgpu
   SUBMENU:=$(DISPLAY_MENU)
   TITLE:=AMDGPU DRM support
