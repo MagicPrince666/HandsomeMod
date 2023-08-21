@@ -343,6 +343,7 @@
 	display@0{
 		compatible = "adafruit,yx240qv29", "ilitek,ili9341";
 		reg = <0>;
+		status = "okay";
 		spi-max-frequency = <10000000>;
 		dc-gpios = <&pio 6 8 GPIO_ACTIVE_HIGH>;// PG8
 		rotate = <270>;
