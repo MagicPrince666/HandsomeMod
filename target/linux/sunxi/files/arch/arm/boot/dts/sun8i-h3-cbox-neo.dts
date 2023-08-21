@@ -346,7 +346,7 @@
 		status = "okay";
 		spi-max-frequency = <10000000>;
 		dc-gpios = <&pio 6 8 GPIO_ACTIVE_HIGH>;// PG8
-		rotate = <270>;
+		rotate = <90>;
 		bgr;
 		fps = <30>;
 		buswidth = <8>;
