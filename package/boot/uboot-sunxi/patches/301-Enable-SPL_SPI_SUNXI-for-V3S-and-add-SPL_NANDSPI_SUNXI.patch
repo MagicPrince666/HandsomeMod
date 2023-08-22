@@ -19,9 +19,9 @@ Index: u-boot-2020.07/arch/arm/mach-sunxi/Kconfig
 +config SPL_SPINAND_SUNXI
 +	bool "Support for SPI NAND-Flash on Allwinner SoCs in SPL"
 +	depends on MACH_SUN4I || MACH_SUN5I || MACH_SUN7I || MACH_SUNXI_H3_H5 || MACH_SUN50I || MACH_SUN8I_V3S
-+	select SPL_SPINAND_SUNXI_SPL_SIZE
-+	select SPL_SPINAND_SUNXI_UBOOT_PADDING
-+	select SPL_SPINAND_SUNXI_PAGESIZE
++#	select SPL_SPINAND_SUNXI_SPL_SIZE
++#	select SPL_SPINAND_SUNXI_UBOOT_PADDING
++#	select SPL_SPINAND_SUNXI_PAGESIZE
 +	help
 +	  Enable support for SPI-NAND Flash. This option allows SPL to read from
 +	  sunxi SPI-NAND Flash. It needs further configuration to calculate all offsets correctly.
@@ -29,7 +29,7 @@ Index: u-boot-2020.07/arch/arm/mach-sunxi/Kconfig
 +config SPL_SPINAND_SUNXI_SPL_SIZE
 +	int "Expected SPL size after padding to blocksize"
 +	depends on SPL_SPINAND_SUNXI
-+	default 0x6000
++	default 24576
 +	help
 +	  The sunxi BROM is only able to load 1KB per page when booting from spi-nand.
 +	  Thus the SPL is getting chunked to 1KB pages in spi-nand. To correctly calculate
@@ -39,7 +39,7 @@ Index: u-boot-2020.07/arch/arm/mach-sunxi/Kconfig
 +config SPL_SPINAND_SUNXI_UBOOT_PADDING
 +	int "Offset between SPL and u-boot"
 +	depends on SPL_SPINAND_SUNXI
-+	default 0x2000
++	default 8192
 +	help
 +	  u-boot is placed with an offset between SPL. To correctly calculate
 +	  the address of u-boot it is thus neccessary to know the offset. 
@@ -47,7 +47,7 @@ Index: u-boot-2020.07/arch/arm/mach-sunxi/Kconfig
 +config SPL_SPINAND_SUNXI_PAGESIZE
 +	int "NAND pagesize in KB"
 +	depends on SPL_SPINAND_SUNXI
-+	default 0x800
++	default 2048
 +	help
 +	  The sunxi BROM is only able to load 1KB per page when booting from spi-nand.
 +	  Thus the SPL is getting chunked to 1KB pages in spi-nand. To correctly calculate

@@ -30,7 +30,6 @@ define Build/sunxi-sdcard
 endef
 
 define Build/sunxi-spinandboot
-	CONFIG_TARGET_ROOTFS_PARTSIZE=104
 	./gen_sunxi_spinand_img.sh $@ \
 		$(STAGING_DIR_IMAGE)/$(DEVICE_NAME)-u-boot-with-spl.bin \
 		$(CONFIG_SUNXI_SPINAND_PAGESIZE) \

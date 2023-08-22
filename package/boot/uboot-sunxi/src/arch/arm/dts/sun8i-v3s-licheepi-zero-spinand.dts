@@ -135,7 +135,7 @@
 	broken-cd;
 	bus-width = <4>;
 	vmmc-supply = <&reg_vcc3v3>;
-	status = "okay";
+	status = "disabled";
 };
 
 &spi0 {
@@ -152,7 +152,7 @@
 		status = "disabled";
 	};
 
-	spi-nand@1 {
+	spi-nand@0 {
 		#address-cells = <1>;
 		#size-cells = <1>;
 		reg = <0>;
